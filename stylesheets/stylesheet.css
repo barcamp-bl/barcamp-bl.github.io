@@ -11,7 +11,7 @@ body {
 /* General & 'Reset' Stuff */
 
 .container {
-  width: 90%;
+  width: 95%;
   max-width: 720px;
   margin: 0 auto;
 }
@@ -64,7 +64,6 @@ header h2 {
 
 #navbar {
   text-align: center;
-  padding: 0;
 }
 
 /* Main Content
