@@ -3,7 +3,7 @@ body {
   padding: 0;
   background: #151515 url("../images/bkg.png") 0 0;
   color: #eaeaea;
-  font: 16px;
+  font-size: 16px;
   line-height: 1.5;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
 }
@@ -64,6 +64,11 @@ header h2 {
 
 #navbar {
   text-align: center;
+}
+
+#footer {
+  width: 100%;
+  margin-bottom: 0;
 }
 
 /* Main Content
@@ -232,3 +237,19 @@ a {
 .cf {
   zoom:1;
 }
+
+#bc-logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#lugons-logo {
+  display: block;
+  float: left;
+}
+
+#imperial-logo {
+  display: block;
+  float: right;
+}  
