@@ -32,7 +32,7 @@ li {
 header {
   background: rgba(0, 0, 0, 0.1);
   width: 100%;
-  border-bottom: 1px dashed #2596be;
+  border-bottom: 1px dashed #ff0000;
   padding: 20px 0;
   margin: 0 0 40px 0;
 }
@@ -43,7 +43,7 @@ header h1 {
   margin: 0 0 0 -40px;
   font-weight: bold;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #2596be;
+  color: #ff0000;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
                0 0 5px rgba(181, 232, 83, 0.1),
                0 0 10px rgba(181, 232, 83, 0.1);
@@ -85,7 +85,7 @@ section img {
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
-  color: #009de0;
+  color: #ff0000;
   letter-spacing: -0.03em;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1),
                0 0 5px rgba(181, 232, 83, 0.1),
@@ -134,7 +134,7 @@ ul li:before {
   content: ">>";
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-size: 13px;
-  color: #2596be;
+  color: #ff0000;
   margin-left: -37px;
   margin-right: 21px;
   line-height: 16px;
@@ -151,7 +151,7 @@ pre {
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 10px;
   font-size: 14px;
-  color: #2596be;
+  color: #ff0000;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -167,7 +167,7 @@ table {
 
 th {
   text-align: left;
-  border-bottom: 1px dashed #2596be;
+  border-bottom: 1px dashed #ff0000;
   padding: 5px 10px;
 }
 
@@ -178,8 +178,8 @@ td {
 hr {
   height: 0;
   border: 0;
-  border-bottom: 1px dashed #2596be;
-  color: #2596be;
+  border-bottom: 1px dashed #ff0000;
+  color: #ff0000;
 }
 
 /* Buttons
@@ -219,7 +219,7 @@ hr {
 */
 
 a {
-  color: #63c0f5;
+  color: #ff0000;
   text-decoration: none;
 }
 
