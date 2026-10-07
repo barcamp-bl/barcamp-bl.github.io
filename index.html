@@ -1,170 +1,160 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="sr">
     <head>
-        <meta charset='utf-8'>
-        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta property="og:title" content="BarCamp BL 0x06" />
-        <meta property="og:description" content="21.10.2023. @ BLC" />
-        <meta property="og:image" content="https://barcamp-bl.github.io/images/cover.png" />
+        <meta property="og:title" content="BarCamp BL 0x07" />
+        <meta property="og:description" content="7.11.2026. @ Banja Luka | stranica u izradi" />
+        <meta property="og:image" content="https://barcamp-bl.github.io/images/barcamp-0x07-teaser.png" />
         <meta property="og:url" content="https://barcamp-bl.github.io/" />
         <meta property="og:type" content="website" />
 
         <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
         <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
 
-        <title>BarCamp BL 0x06</title>
+        <title>BarCamp BL 0x07</title>
+
+        <style>
+            /* privremeno: chrome dok Miloš ne izabere boju za 0x07 */
+            :root {
+                --accent: #c9d0d6;
+                --accent-line: #8a949d;
+                --chrome: linear-gradient(180deg, #ffffff 0%, #e6eaee 38%, #7d8791 52%,
+                                          #b9c1c8 62%, #f4f6f8 100%);
+            }
+
+            header { border-bottom-color: var(--accent-line); }
+            a, pre, ul li:before { color: var(--accent); }
+            hr, th { border-bottom-color: var(--accent-line); }
+            header h1, #main_content h3 {
+                color: var(--accent);
+                background: var(--chrome);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: none;
+            }
+            header h2 { color: #eaeaea; }
+
+            .tape {
+                height: 26px;
+                margin: 0 0 24px;
+                background: repeating-linear-gradient(-45deg,
+                    #f5c400 0 18px, #151515 18px 36px);
+                border-radius: 2px;
+            }
+            .tape.bottom { margin: 24px 0; }
+
+            #uc {
+                text-align: center;
+                font-size: 22px;
+                letter-spacing: 0.08em;
+                margin: 0 0 20px;
+                color: #f5c400;
+            }
+
+            pre.term {
+                color: #eaeaea;
+                font-size: 14px;
+                line-height: 1.6;
+                white-space: pre;
+            }
+            pre.term .p  { color: var(--accent); }
+            pre.term .ok { color: #3fdc6e; }
+            pre.term .wt { color: #f5c400; }
+            pre.term .no { color: #ff4d4d; }
+            pre.term .dim { color: #888; }
+            .cursor {
+                display: inline-block;
+                width: 0.6em; height: 1.1em;
+                vertical-align: text-bottom;
+                background: #eaeaea;
+                animation: blink 1s steps(1) infinite;
+            }
+            @keyframes blink { 50% { opacity: 0; } }
+            @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+
+            #teaser { display: block; margin: 0 auto; max-width: 100%; height: auto;
+                      border-radius: 4px; }
+            .caption { text-align: center; color: #999; font-size: 13px; margin-top: 8px; }
+
+            ul.arhiva { padding-left: 37px; }
+
+            @media (max-width: 520px) {
+                header h1 { margin-left: 0; font-size: 24px; }
+                pre.term { font-size: 11px; }
+                #uc { font-size: 17px; }
+            }
+        </style>
     </head>
 
     <body>
 
         <header>
             <div class="container">
-                <h1>BarCamp BL 0x06</h1>
-                <h2>21.10.2023 | Banja Luka</h2>
-           </div>
+                <h1>BarCamp BL 0x07</h1>
+                <h2>7.11.2026 | Banja Luka</h2>
+            </div>
         </header>
 
         <div class="container">
-                <h3 id="navbar">
-                    <a href="#predavanja">[predavanja]</a> <a href="#raspored">[raspored]</a> <a href="#lokacija">[lokacija]</a>
-                </h3>
-            <hr>
-            <hr>
             <section id="main_content">
-                <img src="images/barcamp-0x06-logo.png" id="bc-logo">
-                <p><strong>Šesti po redu banjalučki BarCamp</strong> održaće se u prostorijama BLC-a 21. oktobra tekuće 2023. godine.<br>
-                    Kao i do sad, čeka nas/Vas nekoliko dobrih predavača.<br>
-                    Sa još boljim temama.<br>
-                    Početak u/oko podne (12:00).<br>
-                <br><br>
-                Po prvi put imamo i predavača strejndžera, tako da se pripremite i za malo slušanja engleskog jezika :) 
-                Uz to, biće priče o računarima iz nekih prošlih vremena (retro computing), 
-                kao i primjeni modernih alata u baratanju sa tim starim stvarčicama. 
 
-                BSD, Terraform, (in)security i još ponešto..
-                </p>
+                <div class="tape" aria-hidden="true"></div>
+                <p id="uc">STRANICA U IZRADI</p>
+
+<pre class="term"><span class="p">$</span> make barcamp-0x07
+<span class="ok">[ OK ]</span> datum ............. 7.11.2026
+<span class="ok">[ OK ]</span> grad .............. Banja Luka
+<span class="wt">[ .. ]</span> lokacija .......... uskoro
+<span class="wt">[ .. ]</span> predavači ......... ??? (tvoje ime ovdje?)
+<span class="wt">[ .. ]</span> boja .............. Miloš još bira
+<span class="no">[FAIL]</span> stranica .......... u izradi (ova)
+<span class="dim">make: *** [barcamp-0x07] Error 0x07</span>
+<span class="p">$</span> <span class="cursor"></span></pre>
+
+                <div class="tape bottom" aria-hidden="true"></div>
+
+                <a href="images/barcamp-0x07-teaser.png">
+                    <img id="teaser" src="images/barcamp-0x07-teaser.png" width="1080" height="1350"
+                         alt="Grafik: predavači na BarCamp BL 0x01 do 0x06. Goran Mekić ima 6 predavanja, kolona 0x07 je puna upitnika.">
+                </a>
+                <p class="caption">Neki skupljaju markice. Meka skuplja BarCampove.</p>
+
                 <hr>
-                <p>Ulaz je <strong><span>besplatan</span></strong>. Prijave <strong>nisu</strong> potrebne.</p>
-                <hr>
-                
-                <a name="barcamp"><h3>Ukoliko ne znate šta je BarCamp...</h3></a>
+
+                <h3>Kolona 0x07 je prazna</h3>
                 <p>
-                    BarCamp (često: unconference) je skup korisnika sa javnim radionicama i predavanjima, 
-                    njihov sadržaj i proces su razvijeni od strane učesnika na početku samog sastanka, 
-                    a razrađuju se u daljem toku. BarCamp služi da se razmjenjuju ideje, diskutuje, uči i stvara, 
-                    a proizvod tog rada može već djelimično da se vidi krajem ove manifestacije i da pokaže konkretne rezultate 
+                    Ako imaš nešto zanimljivo da ispričaš (hardver, softver, security, retro,
+                    nešto što si napravio pa se pokvarilo), javi se organizatorima.
+                    Prijave za predavače su otvorene, slušaoci se ne prijavljuju, samo dođu.
+                </p>
+
+                <hr>
+
+                <h3>Ukoliko ne znate šta je BarCamp...</h3>
+                <p>
+                    BarCamp (često: unconference) je skup korisnika sa javnim radionicama i predavanjima,
+                    njihov sadržaj i proces su razvijeni od strane učesnika na početku samog sastanka,
+                    a razrađuju se u daljem toku. BarCamp služi da se razmjenjuju ideje, diskutuje, uči i stvara,
+                    a proizvod tog rada može već djelimično da se vidi krajem ove manifestacije i da pokaže konkretne rezultate
                     (npr. zajedničke programske radionice).
                 </p>
+
                 <hr>
 
-                <a name="predavanja"><h3>Lista predavanja</h3></a>
-                <ul>
-                    <li id="zarko"><strong>Generisanje kertridža za Commodore 64/128/Plus4 uz pomoć Python-a</strong> // ~Žarko Živanov</li>
-                    <p><em>
-                        Pored toga što se Python koristi u savremenim profesionalnim i manje profesionalnim primenama, 
-                        može se upotrebiti i za veoma star hardver i softver. Naravno, ne direktno jer su mašine stare 30 i više godina prespore da bi ga pokrenule, 
-                        nego kao programski jezik za pravljenje softverskih alata za razne retro-computing primene. 
-                        U ovom predavanju će biti opisana upotreba Pythona za generisanje softvera za Commodore 64/128/Plus4 kertridže.
-                    </em></p>
-                    
-                    <li id="marko"><strong>Mala istorija kućnih računara (u Ex-YU)</strong> // ~Marko Šolajić</li>
-                    <p><em>
-                        U turbulentnim osamdesetim godinama prošlog veka, Jugoslavija je zatečena u brzom razvoju računarske tehnike u svetu. 
-                        Kakav je bio odgovor domaće industrije, i da li se mogla takmičiti sa gigantima kao što su Sinclair, Commodore i Apple? 
-                        Legalan uvoz ili šverc, distribucija softvera naspram piraterije, sve ovo su teme o kojima možete čuti u ovom predavanju.
-                    </em></p>
-                    
-                    <li id="utkonos"><strong>Malware House Party</strong> // ~Robert Simmons</li>
-                    <p><em>
-                        Malicious IExpress installers are abused to deliver a wide variety of malware payloads all at the same time. 
-                        These include Amadey, RedLine, SmokeLoader, Mystic, and many more. 
-                        This talk will examine these malicious installers and a few ways by which they can be detected and differentiated from benign IExpress installers. 
-                        Additionally, one of the payloads, Amadey is examined more closely from a reverse engineering perspective.
-                    </em></p>
-                    
-                    <li id="fallen"><strong>Terraforming with style</strong> // ~Stefan Matić</li>
-                    <p><em>
-                        Vjerovatno su i Vama odlične situacije kada podesite sebi razne servise i servere na cloudu, sve dotegnete kako treba, 
-                        ispodešavate konfiguracije i konačno sve uvežete, pa nakon toga isto uradite za produkciju - kad ono PRC, ništa ne radi! 
-                        Zaboravili ste otvoriti port za app, niste podesili skaliranje kako treba, load balancer ne gađa dobar path... 
-                        I onda kontate mora da postoji lakši način?<br>
-                        <br>Enter Terraform!<br> 
-                        <br>Naučite pisati infrastrukturu kao kod, automatizujte sve kroz pipeline za multi-account okruženja i to sve sa stilom.
-                    </em></p>
-                    
-                    <li id="meka"><strong>Tehnike ograničenja mogućnosti u svrhu sigurnosti</strong> // ~Goran Mekić</li>
-                    <p><em>
-                        Najbolji pristup sigurnosti je napraviti da je program minimalan, čime se statistički smanjuje šansa upada. 
-                        Postoje razne tehnike i biblioteke koje namerno smanjuju mogućnosti programa kako bi u slučaju upada maliciozan program bio onemogućen da koristi resurse. 
-                        Ova prezentacija će opisati neke od tih tehnika i kako se koriste.
-                    </em></p>
-
-                    <li id="simke"><strong>SBC, PCBA, SoC, PMIC, LDO, GIC, eMMC, SPI, TCON, ARM, AArch64, MaskROM, BROM, TF-A, U-Boot, DT, PSCI, SMC, PINE64... Konfuzno, zar ne?</strong> // ~Dragan Simić</li>
-                    <p><em>
-                        Single-board računari u današnje vrijeme ni po čemu ne predstavljaju nov ili
-                        nepoznat koncept, ali često i dalje ostaju puni nepoznanica, čak i za dobar dio
-                        njihovih korisnika. Ako na to dodamo značajno povećanje njihovih performansi
-                        i cijena u zadnjih nekoliko godina, dobijamo osnovu za konfuziju oko njihove
-                        uloge na tržištu i toga šta ih zapravo izdvaja i čini posebnim.<br><br>
-                        Stvarna uloga i vrijednost single-board računara postaje jasnija tek kroz dublji
-                        ulazak u složenu problematiku otvorenosti i zatvorenosti hardverskih arhitektura
-                        i čipova, firmvera i sistemskog softvera niskog nivoa, te čitavih platformi kao
-                        cjelina. Situaciju ne olakšava velika raznolikost i brojnost platformi baziranih
-                        na ARM arhitekturi, u čemu se zapravo nalazi izvor velike popularnosti ARM arhitekture.
-                        Nažalost, u tome se ujedno krije i izvor mnogih problema, od kojih već decenijama
-                        smrtno boluju razni tipovi uređaja, poput pametnih telefona.<br><br>
-                        Posebnu pažnju zaslužuje osvrt na modele single-board računara koji kao primarni
-                        cilj imaju maksimalno moguću otvorenost - od dizajna na nivou električnih kola,
-                        preko dokumentovanosti SoC-a i ostalih čipova na kojima su bazirani, do firmvera
-                        i sistemskog softvera niskog nivoa. Naravno, otvorenost platforme nije jednako
-                        bitna za svakoga, ali je dobro biti barem upoznat sa razlozima za bitnost.
-                    </em></p>
+                <h3>Prethodni BarCampovi</h3>
+                <ul class="arhiva">
+                    <li>0x06 // 21.10.2023 @ BLC</li>
+                    <li>0x05 // 1.9.2018 @ BLC</li>
+                    <li>0x04 // 11.2016 @ BLC</li>
+                    <li>0x03 // 11.6.2016 @ BLC</li>
+                    <li>0x02 // 14.11.2015 @ ETF</li>
+                    <li>0x01 // 6.6.2015 @ ETF</li>
                 </ul>
-                <hr>
-                
-                <a name="raspored"><h3>Raspored predavanja</h3></a>
-                <ul>
-                    <li><a href="#simke">Dragan Simić</a></li>
-                    <em>12:00 - 13:00</em>
-                    
-                    <li><a href="#meka">Goran Mekić</a></li>
-                    <em>13:15 - 14:00</em>
-                    
-                    <li><a href="#utkonos">Robert Simmons</a></li>
-                    <em>14:15 - 15:30</em>
-                    
-                    <hr>
-                    <p>Pauza za ručak :)</p>
-                    <hr>
-                    
-                    <li><a href="#marko">Marko Šolajić</a></li>
-                    <em>16:30 - 17:15</em>
-                    
-                    <li><a href="#zarko">Žarko Živanov</a></li>
-                    <em>17:30 - 18:30</em>
-                    
-                    <li><a href="#fallen">Stefan Matić</a></li>
-                    <em>18:45 - 20:00</em>
-                    
-                </ul>
-                <hr>
-
-                <a name="lokacija"><h3>Lokacija</h3></a>
-                <ul>
-                    <li>Banja Luka College, BLC</li>
-                    <li>Miloša Obilića 30</li>
-                    <li>78000 Banja Luka</li>
-                    <li>Republika Srpska</li>
-                    <li>Bosna i Hercegovina</li>
-                    <li>Amfiteatar akademaca (prizemlje)</li>
-                </ul>
-                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=17.18682557344437%2C44.761258740967335%2C17.190274894237522%2C44.76254616491998&amp;layer=mapnik&amp;marker=44.76190245652975%2C17.188550233840942" width="100%" height="350" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-                    <br/>
-                    <small><a href="https://www.openstreetmap.org/?mlat=44.76190&amp;mlon=17.18855#map=19/44.76190/17.18855" target="_blank">/* Pogledaj veću mapu */</a></small>
             </section>
         </div>
-        
-        <hr>
+
     </body>
 </html>
