@@ -84,12 +84,11 @@ layout: default
   <div class="info">
     <div>
       <h2><b>program</b> {{ site.edition }}</h2>
-      <div class="slot"><time>12:00</time><span>otvaranje, kafa, nervoza</span></div>
-      <div class="slot"><time>12:30</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
-      <div class="slot"><time>13:15</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
-      <div class="slot"><time>14:00</time><span><span class="dim">pauza (hrana, ako je bude)</span></span></div>
-      <div class="slot"><time>15:00</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
-      <div class="slot"><time>15:45</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
+<pre class="term"><span class="p">$</span> crontab -l
+<span class="dim">#m  h  dom mon dow</span>
+<span class="wt">0   12 7   11  *</span>    otvaranje, kafa, nervoza
+<span class="dim"># ostatak satnice stiže
+# kad se zatvore prijave ({{ site.cfp_until | slice: 0, 6 }})</span></pre>
     </div>
     <div id="lokacija">
       <h2><b>traceroute</b> barcamp-0x07</h2>
