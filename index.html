@@ -1,160 +1,180 @@
-<!DOCTYPE html>
-<html lang="sr">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <meta property="og:title" content="BarCamp BL 0x07" />
-        <meta property="og:description" content="7.11.2026. @ Banja Luka | stranica u izradi" />
-        <meta property="og:image" content="https://barcamp-bl.github.io/images/barcamp-0x07-teaser.png" />
-        <meta property="og:url" content="https://barcamp-bl.github.io/" />
-        <meta property="og:type" content="website" />
-
-        <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-        <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-
-        <title>BarCamp BL 0x07</title>
-
-        <style>
-            /* privremeno: chrome dok Miloš ne izabere boju za 0x07 */
-            :root {
-                --accent: #c9d0d6;
-                --accent-line: #8a949d;
-                --chrome: linear-gradient(180deg, #ffffff 0%, #e6eaee 38%, #7d8791 52%,
-                                          #b9c1c8 62%, #f4f6f8 100%);
-            }
-
-            header { border-bottom-color: var(--accent-line); }
-            a, pre, ul li:before { color: var(--accent); }
-            hr, th { border-bottom-color: var(--accent-line); }
-            header h1, #main_content h3 {
-                color: var(--accent);
-                background: var(--chrome);
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                text-shadow: none;
-            }
-            header h2 { color: #eaeaea; }
-
-            .tape {
-                height: 26px;
-                margin: 0 0 24px;
-                background: repeating-linear-gradient(-45deg,
-                    #f5c400 0 18px, #151515 18px 36px);
-                border-radius: 2px;
-            }
-            .tape.bottom { margin: 24px 0; }
-
-            #uc {
-                text-align: center;
-                font-size: 22px;
-                letter-spacing: 0.08em;
-                margin: 0 0 20px;
-                color: #f5c400;
-            }
-
-            pre.term {
-                color: #eaeaea;
-                font-size: 14px;
-                line-height: 1.6;
-                white-space: pre;
-            }
-            pre.term .p  { color: var(--accent); }
-            pre.term .ok { color: #3fdc6e; }
-            pre.term .wt { color: #f5c400; }
-            pre.term .no { color: #ff4d4d; }
-            pre.term .dim { color: #888; }
-            .cursor {
-                display: inline-block;
-                width: 0.6em; height: 1.1em;
-                vertical-align: text-bottom;
-                background: #eaeaea;
-                animation: blink 1s steps(1) infinite;
-            }
-            @keyframes blink { 50% { opacity: 0; } }
-            @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
-
-            #teaser { display: block; margin: 0 auto; max-width: 100%; height: auto;
-                      border-radius: 4px; }
-            .caption { text-align: center; color: #999; font-size: 13px; margin-top: 8px; }
-
-            ul.arhiva { padding-left: 37px; }
-
-            @media (max-width: 520px) {
-                header h1 { margin-left: 0; font-size: 24px; }
-                pre.term { font-size: 11px; }
-                #uc { font-size: 17px; }
-            }
-        </style>
-    </head>
-
-    <body>
-
-        <header>
-            <div class="container">
-                <h1>BarCamp BL 0x07</h1>
-                <h2>7.11.2026 | Banja Luka</h2>
-            </div>
-        </header>
-
-        <div class="container">
-            <section id="main_content">
-
-                <div class="tape" aria-hidden="true"></div>
-                <p id="uc">STRANICA U IZRADI</p>
-
-<pre class="term"><span class="p">$</span> make barcamp-0x07
+---
+layout: default
+---
+{%- assign lineup = site.talks | where: "edition", site.edition | sort: "path" -%}
+{%- assign past = site.talks | where_exp: "t", "t.edition != site.edition" -%}
+{%- assign held = past | where_exp: "t", "t.note != 'otkazano'" -%}
+{%- assign names = "" -%}
+{%- for t in held -%}{%- for s in t.speakers -%}{%- assign names = names | append: s | append: "|" -%}{%- endfor -%}{%- endfor -%}
+{%- assign speakers = names | split: "|" | uniq -%}
+{%- assign meka = held | where_exp: "t", "t.speakers contains 'Goran Mekić'" -%}
+<header class="hero">
+  <div>
+    <div class="dim">~/banja-luka $ ./barcamp --edition</div>
+    <h1>BarCamp<br>BL {{ site.edition }}</h1>
+    <p class="sub">subota <b>7.11.2026</b> · od 12:00 · Banja Luka · <span class="eta" style="white-space:nowrap">?? dana</span></p>
+    <div class="btns">
+      <a class="btn primary" href="#podrska">./prijavi-predavanje</a>
+      <a class="btn" href="#lokacija">traceroute lokacija</a>
+    </div>
+<pre class="term"><span class="dim"># neki skupljaju markice. Meka skuplja BarCampove.</span>
+<span class="p">$</span> make barcamp-0x07
 <span class="ok">[ OK ]</span> datum ............. 7.11.2026
-<span class="ok">[ OK ]</span> grad .............. Banja Luka
-<span class="wt">[ .. ]</span> lokacija .......... uskoro
-<span class="wt">[ .. ]</span> predavači ......... ??? (tvoje ime ovdje?)
+<span class="ok">[ OK ]</span> ulaz .............. besplatan
+<span class="wt">[ .. ]</span> lokacija .......... resolvuje se, javljamo uskoro
+<span class="wt">[ .. ]</span> predavači ......... {% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? (prijave do 16.10.)
 <span class="wt">[ .. ]</span> boja .............. Miloš još bira
-<span class="no">[FAIL]</span> stranica .......... u izradi (ova)
-<span class="dim">make: *** [barcamp-0x07] Error 0x07</span>
 <span class="p">$</span> <span class="cursor"></span></pre>
+  </div>
+  <figure>
+    <a href="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}">
+      <img src="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}" width="1080" height="1350"
+           alt="Grafik: predavači na BarCamp BL 0x01 do 0x06. Goran Mekić ima 6 predavanja, kolona 0x07 je puna upitnika.">
+    </a>
+  </figure>
+</header>
 
-                <div class="tape bottom" aria-hidden="true"></div>
+<section>
+  <h2><b>whoami</b></h2>
+  <div class="about">
+    <p>BarCamp je nekonferencija: nema kotizacije, nema odijela, nema slajdova od 80 strana (osim ako baš
+      moraš). Ljudi dođu, ispričaju šta su napravili, pokvarili ili otkrili, a ostali pitaju dok ne
+      bude vrijeme za pauzu. Od 2015. godine, u Banjoj Luci.</p>
+    <div class="stats">
+      <div><b>{{ site.data.editions.size }}</b><span>izdanja</span></div>
+      <div><b>{{ held.size }}+</b><span>predavanja</span></div>
+      <div><b>{{ speakers.size }}+</b><span>predavača</span></div>
+      <div><b>{{ meka.size }}</b><span>predavanja: samo Meka</span></div>
+    </div>
+  </div>
+</section>
 
-                <a href="images/barcamp-0x07-teaser.png">
-                    <img id="teaser" src="images/barcamp-0x07-teaser.png" width="1080" height="1350"
-                         alt="Grafik: predavači na BarCamp BL 0x01 do 0x06. Goran Mekić ima 6 predavanja, kolona 0x07 je puna upitnika.">
-                </a>
-                <p class="caption">Neki skupljaju markice. Meka skuplja BarCampove.</p>
+<section id="lineup">
+  <h2><b>ls</b> {{ site.edition }}/predavanja/ <span class="dim">// redoslijed uskoro</span></h2>
+  {%- if lineup.size == 0 %}
+  <pre class="term"><span class="p">$</span> ls {{ site.edition }}/predavanja/
+<span class="dim">ls: lista se objavljuje uskoro (prijave do {{ site.cfp_until }})</span></pre>
+  {%- else %}
+  <div class="lineup">
+{%- for t in lineup %}
+    {%- assign name = t.speakers | first %}
+    {%- assign w = name | split: " " %}
+    <article class="tc"><div class="bar">~/{{ site.edition }}/{{ t.home }}</div>
+      <div class="body">
+        <div class="who"><div class="av">{{ w[0] | slice: 0 }}{{ w[1] | slice: 0 }}</div>
+          <div><div class="nm">{{ t.speakers | join: " & " }}</div>
+            {%- if t.link %}<a href="{{ t.link }}">{{ t.link_label | default: t.link }}</a>{% endif %}</div></div>
+        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}</div>
+        {%- if t.description %}
+        <p class="desc">{{ t.description | escape }}</p>
+        {%- endif %}
+        <div class="foot">
+          {%- for e in site.data.editions reversed %}
+            {%- assign hit = held | where: "edition", e.id | where_exp: "x", "x.speakers contains name" %}
+            {%- if hit.size > 0 %}<span class="chip" style="color:{{ e.fg | default: e.color }}">{{ e.id }}</span>{% endif %}
+          {%- endfor %}
+          <span class="chip" style="color:var(--accent)">{{ site.edition }}</span></div>
+      </div></article>
+{%- endfor %}
+  </div>
+  {%- endif %}
+</section>
 
-                <hr>
+<section id="program">
+  <div class="info">
+    <div>
+      <h2><b>program</b> {{ site.edition }}</h2>
+      <div class="slot"><time>12:00</time><span>otvaranje, kafa, nervoza</span></div>
+      <div class="slot"><time>12:30</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
+      <div class="slot"><time>13:15</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
+      <div class="slot"><time>14:00</time><span><span class="dim">pauza (hrana, ako je bude)</span></span></div>
+      <div class="slot"><time>15:00</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
+      <div class="slot"><time>15:45</time><span><span class="q">???</span> <span class="dim">// ovaj slot može biti tvoj</span></span></div>
+    </div>
+    <div id="lokacija">
+      <h2><b>traceroute</b> barcamp-0x07</h2>
+      <div class="loc">
+        <div class="bar">lokacija — osm</div>
+        <div id="map" role="img" aria-label="Mapa: Banja Luka, tačna lokacija uskoro"></div>
+<pre><span class="dim">$</span> host barcamp-0x07
+<span class="dim">;; connection timed out; no servers could be reached</span>
+<span class="wt">lokacija: uskoro</span> (negdje u Banjoj Luci)
+<span class="dim">geo</span> 44.7723 N, 17.1917 E ± par km   <a href="https://www.openstreetmap.org/way/1287023880#map=14/44.7722669/17.1917339">osm</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=44.7722669,17.1917339">google maps</a></pre>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <h3>Kolona 0x07 je prazna</h3>
-                <p>
-                    Ako imaš nešto zanimljivo da ispričaš (hardver, softver, security, retro,
-                    nešto što si napravio pa se pokvarilo), javi se organizatorima.
-                    Prijave za predavače su otvorene, slušaoci se ne prijavljuju, samo dođu.
-                </p>
+<section id="arhiva">
+  <h2><b>git log</b> --editions <span class="dim">(klikni na commit)</span></h2>
+  <div class="arch">
+    <ul class="log" id="log">
+{%- for e in site.data.editions %}
+      <li style="--c:{{ e.fg | default: e.color }}" data-id="{{ e.id }}" tabindex="0" role="button"{% if forloop.first %} class="on"{% endif %}>
+        <span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
+        <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</li>
+{%- endfor %}
+    </ul>
+    <div>
+{%- for e in site.data.editions %}
+      {%- assign ts = site.talks | where: "edition", e.id | sort: "path" %}
+      <div class="show" id="show-{{ e.id }}"{% unless forloop.first %} hidden{% endunless %}>
+        <div class="cmd">$ git show {{ e.id }} <span style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
+        <ol>
+        {%- for t in ts %}
+          <li{% if t.note == "otkazano" %} class="x"{% endif %}>{{ t.title | escape }} <span class="dim">— {{ t.speakers | join: " & " }}
+            {%- if t.note and t.note != "otkazano" %} ({{ t.note }}){% endif %}</span></li>
+        {%- endfor %}
+        </ol>
+      </div>
+{%- endfor %}
+    </div>
+  </div>
+</section>
 
-                <hr>
+<section id="podrska">
+  <h2><b>contributing.md</b></h2>
+  <div class="two">
+    <div class="box">
+      <h3>Održi predavanje ili podrži BarCamp</h3>
+      <p>Imaš temu? Hardver, softver, security, retro, nešto što si napravio pa se pokvarilo.
+        Prijave do {{ site.cfp_until }}.</p>
+      <p>Hoćeš da pomogneš? Hrana i piće, majice, afterparty ili troškovi organizacije. Dogovorićemo se.</p>
+      <a class="btn primary" href="mailto:{{ site.email }}">{{ site.email }}</a>
+    </div>
+    <div class="box">
+      <h3>Samo dođi</h3>
+      <p>Slušaoci se ne prijavljuju. Ulaz je slobodan. Pitanja poslije predavanja su obavezna (skoro).</p>
+      <a class="btn" href="#lokacija">gdje je to?</a>
+    </div>
+  </div>
+</section>
 
-                <h3>Ukoliko ne znate šta je BarCamp...</h3>
-                <p>
-                    BarCamp (često: unconference) je skup korisnika sa javnim radionicama i predavanjima,
-                    njihov sadržaj i proces su razvijeni od strane učesnika na početku samog sastanka,
-                    a razrađuju se u daljem toku. BarCamp služi da se razmjenjuju ideje, diskutuje, uči i stvara,
-                    a proizvod tog rada može već djelimično da se vidi krajem ove manifestacije i da pokaže konkretne rezultate
-                    (npr. zajedničke programske radionice).
-                </p>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+// location: venue not confirmed yet. Placeholder point is the city centre
+// (Hram Hrista Spasitelja, OSM way 1287023880) with a dashed "?" area around it, no address.
+const LAT = 44.7722669, LON = 17.1917339;
+const map = L.map('map', { scrollWheelZoom: false });
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+L.circle([LAT, LON], { radius: 3500, color: '#f5c400', weight: 2, dashArray: '6 6',
+  fillColor: '#f5c400', fillOpacity: .08 }).addTo(map);
+map.fitBounds(L.latLng(LAT, LON).toBounds(7000), { padding: [16, 16] });
+// tag sits on the circle's top edge, so the map's own "Banja Luka" label stays readable
+L.marker([LAT + 3500 / 111320, LON], { icon: L.divIcon({ className: 'ring-tag', html: '<span>barcamp-0x07: ???</span>',
+  iconSize: [0, 0] }), interactive: false }).addTo(map);
 
-                <hr>
-
-                <h3>Prethodni BarCampovi</h3>
-                <ul class="arhiva">
-                    <li>0x06 // 21.10.2023 @ BLC</li>
-                    <li>0x05 // 1.9.2018 @ BLC</li>
-                    <li>0x04 // 11.2016 @ BLC</li>
-                    <li>0x03 // 11.6.2016 @ BLC</li>
-                    <li>0x02 // 14.11.2015 @ ETF</li>
-                    <li>0x01 // 6.6.2015 @ ETF</li>
-                </ul>
-            </section>
-        </div>
-
-    </body>
-</html>
+// archive: every edition's talk list is in the page, the log just switches which one is shown
+const log = document.getElementById('log');
+function show(li) {
+  log.querySelectorAll('li').forEach(x => x.classList.toggle('on', x === li));
+  document.querySelectorAll('.show').forEach(s => s.hidden = s.id !== 'show-' + li.dataset.id);
+}
+log.addEventListener('click', ev => { const li = ev.target.closest('li'); if (li) show(li); });
+log.addEventListener('keydown', ev => {
+  const li = ev.target.closest('li');
+  if (li && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); show(li); }
+});
+</script>

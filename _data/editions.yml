@@ -1,0 +1,39 @@
+# Past editions, newest first. Each edition has its own color; fg overrides it where the color
+# itself is unreadable on the dark background.
+- id: "0x06"
+  date: "21.10.2023"
+  venue: Banja Luka College
+  short: BLC
+  color: "#e10600"
+  color_name: crvena
+- id: "0x05"
+  date: "1.9.2018"
+  venue: Banja Luka College
+  short: BLC
+  color: "#d4a017"
+  color_name: zlatna
+- id: "0x04"
+  date: "11.2016"
+  venue: Banja Luka College
+  short: BLC
+  color: "#111111"
+  fg: "#e6e6e6"
+  color_name: crno-bijela
+- id: "0x03"
+  date: "11.6.2016"
+  venue: Banja Luka College
+  short: BLC
+  color: "#f07c00"
+  color_name: narandžasta
+- id: "0x02"
+  date: "14.11.2015"
+  venue: Elektrotehnički fakultet
+  short: ETF
+  color: "#1f6fe0"
+  color_name: plava
+- id: "0x01"
+  date: "6.6.2015"
+  venue: Elektrotehnički fakultet
+  short: ETF
+  color: "#2bb24c"
+  color_name: zelena
