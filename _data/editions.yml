@@ -1,10 +1,11 @@
-# Past editions, newest first. Each edition has its own color; fg overrides it where the color
-# itself is unreadable on the dark background.
+# Past editions, newest first. Each edition has its own color (the merch color). fg is the shade used
+# on the page where the color itself doesn't reach WCAG AA contrast (4.5:1) on the dark background.
 - id: "0x06"
   date: "21.10.2023"
   venue: Banja Luka College
   short: BLC
   color: "#e10600"
+  fg: "#ff524d"
   color_name: crvena
 - id: "0x05"
   date: "1.9.2018"
@@ -30,6 +31,7 @@
   venue: Elektrotehnički fakultet
   short: ETF
   color: "#1f6fe0"
+  fg: "#5491e7"
   color_name: plava
 - id: "0x01"
   date: "6.6.2015"

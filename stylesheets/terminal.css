@@ -1,11 +1,11 @@
 /* BarCamp BL 0x07: terminal theme. Accent is a temporary chrome until the 0x07 color is picked. */
 :root {
-  --bg: #1c2024; --panel: #252a30; --line: #363d45; --fg: #dde2e6; --dim: #85909a;
+  --bg: #1c2024; --panel: #252a30; --line: #363d45; --fg: #dde2e6; --dim: #8d98a1;
   --accent: #c9d0d6; --ok: #3fdc6e; --wt: #f5c400; --no: #ff4d4d; --gut: clamp(16px, 3vw, 40px);
   --chrome: linear-gradient(180deg, #fff 0%, #e6eaee 38%, #7d8791 52%, #b9c1c8 62%, #f4f6f8 100%);
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 body { margin: 0; background: var(--bg); color: var(--fg);
        font: 15px/1.65 "JetBrains Mono", ui-monospace, monospace; }
 a { color: var(--accent); }
@@ -15,10 +15,10 @@ a { color: var(--accent); }
 nav { position: sticky; top: 0; z-index: 1001; background: #2a3037; border-bottom: 1px solid var(--line); }
 nav .wrap { display: flex; gap: 2px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
 nav a { padding: 8px 12px; text-decoration: none; color: var(--dim); font-size: 13px; }
-nav a:hover { color: var(--fg); background: var(--line); }
 nav a.on { background: var(--ok); color: #000; font-weight: 700; }
-nav a.on::after { content: "*"; }
-nav .s { display: none; }
+/* the "*" marks the active window; its space is reserved on every tab so nothing shifts */
+nav a::after { content: "*"; visibility: hidden; }
+nav a.on::after { visibility: visible; }
 nav .clock { margin-left: auto; padding: 8px 12px; color: var(--dim); font-size: 13px; }
 
 /* the heatmap spans exactly from the prompt line to the bottom of the make log */
@@ -26,6 +26,12 @@ nav .clock { margin-left: auto; padding: 8px 12px; color: var(--dim); font-size:
 .hero h1 { margin: 0; font-size: clamp(54px, 8.5vw, 150px); line-height: 1.02; font-weight: 800;
            letter-spacing: -.04em; background: var(--chrome); -webkit-background-clip: text;
            background-clip: text; -webkit-text-fill-color: transparent; }
+/* logo shader (javascripts/logo.js) draws over the heading; without it, the CSS heading shows */
+.hero .mark { position: relative; }
+.hero .mark canvas { position: absolute; inset: 0; width: 100%; display: block; pointer-events: none;
+                     opacity: 0; transition: opacity .4s ease; }
+.hero .mark.shaded canvas { opacity: 1; }
+.hero .mark.shaded h1 { opacity: 0; transition: opacity .4s ease; }
 .hero .sub { font-size: clamp(16px, 1.6vw, 22px); margin: 18px 0 28px; }
 .hero .sub b { color: var(--wt); }
 .hero > *, .info > *, .arch > * { min-width: 0; }
@@ -36,7 +42,6 @@ nav .clock { margin-left: auto; padding: 8px 12px; color: var(--dim); font-size:
 .btn { display: inline-block; padding: 10px 18px; border: 1px solid var(--accent); text-decoration: none;
        font-weight: 700; }
 .btn.primary { background: var(--accent); color: #000; }
-.btn:hover { filter: brightness(1.2); }
 
 pre.term { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px;
            overflow-x: auto; font-size: 14px; margin: 0; }
@@ -61,11 +66,7 @@ h2::before { content: "## "; color: var(--accent); }
 .stats span { color: var(--dim); font-size: 12px; }
 
 /* program + location side by side */
-.info { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-.slot { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 10px 0;
-        border-bottom: 1px dashed var(--line); }
-.slot time { color: var(--dim); }
-.slot .q { color: var(--wt); }
+.info { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; }
 
 .loc { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .loc .bar { padding: 8px 14px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 12px; }
@@ -75,20 +76,14 @@ h2::before { content: "## "; color: var(--accent); }
 .leaflet-container { font: 12px "JetBrains Mono", monospace; }
 .leaflet-control-attribution { background: rgba(28, 32, 36, .85) !important; color: var(--dim); }
 .leaflet-bar a { background: var(--panel); color: var(--fg); border-color: var(--line); }
-.pin { color: var(--ok); white-space: nowrap; font-weight: 700; }
 .ring-tag span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-weight: 700;
                  color: var(--wt); background: #1c2024; border: 1px solid var(--wt); padding: 1px 6px; }
-.pin b { display: block; width: 24px; height: 24px; border: 2px solid var(--ok); border-radius: 50%;
-         box-shadow: 0 0 0 6px rgba(63, 220, 110, .2); background: rgba(63, 220, 110, .35); }
-.pin span { position: absolute; left: 32px; top: 0; background: #1c2024; border: 1px solid var(--ok);
-            padding: 0 6px; font-size: 12px; }
 .loc pre { margin: 0; padding: 14px 16px; font: inherit; font-size: 13px; white-space: pre-wrap; }
 
 /* 0x07 lineup: one terminal window per talk */
 .lineup { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
 .tc { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
       display: flex; flex-direction: column; }
-.tc:hover { border-color: var(--accent); }
 .tc .bar { padding: 7px 12px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 12px;
            display: flex; align-items: center; gap: 5px; }
 .tc .body { padding: 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
@@ -107,14 +102,19 @@ h2::before { content: "## "; color: var(--accent); }
 .chip { font-size: 10px; padding: 0 5px; border: 1px solid; border-radius: 3px; }
 
 /* archive = git log on the left, git show on the right */
+/* the last section is at least a screen tall, so it can scroll up to the nav like every other one
+   (only matters on wide screens; on phones the archive is longer than that anyway) */
+#arhiva { min-height: 100vh; }
 .arch { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
 .log { margin: 0; padding: 0; list-style: none; font-size: 14px; }
-.log li { border-left: 2px solid var(--line); padding: 0 0 16px 20px; position: relative; cursor: pointer; }
+.log li { border-left: 2px solid var(--line); padding: 0 0 16px 20px; position: relative; }
+.log button { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit;
+              text-align: left; cursor: pointer; }
+.log button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
 .log li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px;
                   border-radius: 50%; background: var(--c); }
-.log li:hover .hash, .log li.on .hash, .log li:focus-visible .hash { text-decoration: underline; }
-.log li:focus-visible { outline: none; }
-.log li.on::after { content: "◀ HEAD"; position: absolute; right: 0; top: 0; color: var(--ok); font-size: 12px; }
+.log [aria-pressed="true"] .hash { text-decoration: underline; }
+.log [aria-pressed="true"]::after { content: "◀ HEAD"; position: absolute; right: 0; top: 0; color: var(--ok); font-size: 12px; }
 .log .hash { color: var(--wt); }
 .log .tag { color: var(--c); border: 1px solid var(--c); padding: 0 6px; border-radius: 3px; font-size: 12px; }
 .show { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 18px 22px; }
@@ -122,7 +122,11 @@ h2::before { content: "## "; color: var(--accent); }
 .show ol { margin: 0; padding-left: 26px; columns: 2; column-gap: 36px; }
 .show li { break-inside: avoid; margin-bottom: 6px; }
 .show li.x { color: var(--dim); text-decoration: line-through; }
-
+/* photos per edition (images/foto/<edition>/), empty frames until they're in */
+.show .pics-cmd { margin: 22px 0 10px; }
+.pics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+.pics > * { aspect-ratio: 4 / 3; border: 1px dashed var(--line); border-radius: 4px; overflow: hidden; }
+.pics img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .box { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
@@ -130,6 +134,15 @@ h2::before { content: "## "; color: var(--accent); }
 .box p { margin: 0 0 14px; color: #aeb7bf; }
 
 footer { margin-top: 72px; border-top: 1px solid var(--line); padding: 24px 0 40px; color: var(--dim); font-size: 12px; }
+
+/* hover only where there is a real pointer: touch screens keep :hover on the last tapped element */
+@media (hover: hover) {
+  nav a:not(.on):hover { color: var(--fg); background: var(--line); }
+  .btn:hover { filter: brightness(1.2); }
+  .tc:hover { border-color: var(--accent); }
+  .log button:hover .hash { text-decoration: underline; }
+  .hero .mark.shaded { cursor: crosshair; }
+}
 
 @media (max-width: 1100px) {
   .hero { grid-template-columns: 1fr; }
@@ -142,10 +155,14 @@ footer { margin-top: 72px; border-top: 1px solid var(--line); padding: 24px 0 40
   .hero { gap: 28px; padding-top: 40px; }
   .stats { grid-template-columns: 1fr 1fr; }
   .show ol { columns: 1; }
+  .pics { grid-template-columns: 1fr 1fr; }
   pre.term { font-size: 11.5px; }
   #map { height: 240px; }
-  nav .clock, nav .n, nav .l { display: none; }
-  nav .s { display: inline; }
-  nav a { padding: 8px 6px; font-size: 12px; }
+  /* phones: short window list, no "*" (the green block marks the active tab) */
+  nav .clock, nav .n, nav a::after { display: none; }
+  nav .wrap { gap: 0; }
+  nav a { padding: 8px 4px; font-size: 12px; }
 }
-</style>
+@media (max-width: 380px) {
+  nav a { font-size: 11px; }
+}

@@ -11,8 +11,11 @@ layout: default
 <header class="hero">
   <div>
     <div class="dim">~/banja-luka $ ./barcamp --edition</div>
-    <h1>BarCamp<br>BL {{ site.edition }}</h1>
-    <p class="sub">subota <b>7.11.2026</b> · od 12:00 · Banja Luka · <span class="eta" style="white-space:nowrap">?? dana</span></p>
+    <div class="mark">
+      <h1>BarCamp<br>BL {{ site.edition }}</h1>
+      <canvas aria-hidden="true"></canvas>
+    </div>
+    <p class="sub">subota <b>7.11.2026</b> · od 12:00 · Banja Luka · <span class="eta" style="white-space:nowrap">t-??d</span></p>
     <div class="btns">
       <a class="btn primary" href="#podrska">./prijavi-predavanje</a>
       <a class="btn" href="#lokacija">traceroute lokacija</a>
@@ -80,56 +83,28 @@ layout: default
   {%- endif %}
 </section>
 
-<section id="program">
-  <div class="info">
-    <div>
+<div class="info">
+  <section id="program">
       <h2><b>program</b> {{ site.edition }}</h2>
 <pre class="term"><span class="p">$</span> crontab -l
 <span class="dim">#m  h  dom mon dow</span>
 <span class="wt">0   12 7   11  *</span>    otvaranje, kafa, nervoza
 <span class="dim"># ostatak satnice stiže
 # kad se zatvore prijave ({{ site.cfp_until | slice: 0, 6 }})</span></pre>
-    </div>
-    <div id="lokacija">
+  </section>
+  <section id="lokacija">
       <h2><b>traceroute</b> barcamp-0x07</h2>
       <div class="loc">
         <div class="bar">lokacija — osm</div>
-        <div id="map" role="img" aria-label="Mapa: Banja Luka, tačna lokacija uskoro"></div>
+        <div id="map"></div>
 <pre><span class="dim">$</span> host barcamp-0x07
 <span class="dim">;; connection timed out; no servers could be reached</span>
 <span class="wt">lokacija: uskoro</span> (negdje u Banjoj Luci)
 <span class="dim">geo</span> 44.7723 N, 17.1917 E ± par km   <a href="https://www.openstreetmap.org/way/1287023880#map=14/44.7722669/17.1917339">osm</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=44.7722669,17.1917339">google maps</a></pre>
       </div>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
-<section id="arhiva">
-  <h2><b>git log</b> --editions <span class="dim">(klikni na commit)</span></h2>
-  <div class="arch">
-    <ul class="log" id="log">
-{%- for e in site.data.editions %}
-      <li style="--c:{{ e.fg | default: e.color }}" data-id="{{ e.id }}" tabindex="0" role="button"{% if forloop.first %} class="on"{% endif %}>
-        <span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
-        <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</li>
-{%- endfor %}
-    </ul>
-    <div>
-{%- for e in site.data.editions %}
-      {%- assign ts = site.talks | where: "edition", e.id | sort: "path" %}
-      <div class="show" id="show-{{ e.id }}"{% unless forloop.first %} hidden{% endunless %}>
-        <div class="cmd">$ git show {{ e.id }} <span style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
-        <ol>
-        {%- for t in ts %}
-          <li{% if t.note == "otkazano" %} class="x"{% endif %}>{{ t.title | escape }} <span class="dim">— {{ t.speakers | join: " & " }}
-            {%- if t.note and t.note != "otkazano" %} ({{ t.note }}){% endif %}</span></li>
-        {%- endfor %}
-        </ol>
-      </div>
-{%- endfor %}
-    </div>
-  </div>
-</section>
 
 <section id="podrska">
   <h2><b>contributing.md</b></h2>
@@ -149,13 +124,61 @@ layout: default
   </div>
 </section>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+<section id="arhiva">
+  <h2><b>git log</b> --editions <span class="dim">(klikni na commit)</span></h2>
+  <div class="arch">
+    <ul class="log" id="log">
+{%- for e in site.data.editions %}
+      <li style="--c:{{ e.fg | default: e.color }}"><button type="button" aria-controls="show-{{ e.id }}" aria-pressed="{{ forloop.first }}">
+        <span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
+        <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</button></li>
+{%- endfor %}
+    </ul>
+    <div>
+{%- for e in site.data.editions %}
+      {%- assign ts = site.talks | where: "edition", e.id | sort: "path" %}
+      <div class="show" id="show-{{ e.id }}"{% unless forloop.first %} hidden{% endunless %}>
+        <div class="cmd">$ git show {{ e.id }} <span style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
+        <ol>
+        {%- for t in ts %}
+          <li{% if t.note == "otkazano" %} class="x"{% endif %}>{{ t.title | escape }} <span class="dim">— {{ t.speakers | join: " & " }}
+            {%- if t.note and t.note != "otkazano" %} ({{ t.note }}){% endif %}</span></li>
+        {%- endfor %}
+        </ol>
+        {%- capture dir %}images/foto/{{ e.id }}/{% endcapture %}
+        {%- assign foto = "" | split: "" %}
+        {%- for f in site.static_files %}
+          {%- assign ext = f.extname | downcase %}
+          {%- if f.path contains dir %}{% case ext %}{% when ".jpg", ".jpeg", ".png", ".webp" %}{% assign foto = foto | push: f.path %}{% endcase %}{% endif %}
+        {%- endfor %}
+        {%- assign foto = foto | sort %}
+        <div class="cmd pics-cmd">$ ls {{ e.id }}/slike/</div>
+        <div class="pics">
+        {%- for f in foto %}
+          <a href="{{ f | relative_url }}"><img src="{{ f | relative_url }}" loading="lazy" alt="BarCamp BL {{ e.id }}"></a>
+        {%- else %}
+          {%- for i in (1..6) %}<span></span>{% endfor %}
+        {%- endfor %}
+        </div>
+        {%- if foto.size == 0 %}
+        <div class="dim"># slike. nekad</div>
+        {%- endif %}
+      </div>
+{%- endfor %}
+    </div>
+  </div>
+</section>
+
+<script src="{{ '/javascripts/logo.js' | relative_url }}" defer></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-// location: venue not confirmed yet. Placeholder point is the city centre
+<script type="module">
+// Runs after the deferred Leaflet (modules wait for deferred scripts); if Leaflet doesn't load,
+// only the map is missing. Venue not confirmed yet: placeholder point is the city centre
 // (Hram Hrista Spasitelja, OSM way 1287023880) with a dashed "?" area around it, no address.
 const LAT = 44.7722669, LON = 17.1917339;
-const map = L.map('map', { scrollWheelZoom: false });
+// no dragging on touch screens, so a thumb on the map scrolls the page (pinch-zoom still works)
+const map = L.map('map', { scrollWheelZoom: false, dragging: !L.Browser.mobile });
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
 L.circle([LAT, LON], { radius: 3500, color: '#f5c400', weight: 2, dashArray: '6 6',
@@ -164,16 +187,15 @@ map.fitBounds(L.latLng(LAT, LON).toBounds(7000), { padding: [16, 16] });
 // tag sits on the circle's top edge, so the map's own "Banja Luka" label stays readable
 L.marker([LAT + 3500 / 111320, LON], { icon: L.divIcon({ className: 'ring-tag', html: '<span>barcamp-0x07: ???</span>',
   iconSize: [0, 0] }), interactive: false }).addTo(map);
-
+</script>
+<script>
 // archive: every edition's talk list is in the page, the log just switches which one is shown
 const log = document.getElementById('log');
-function show(li) {
-  log.querySelectorAll('li').forEach(x => x.classList.toggle('on', x === li));
-  document.querySelectorAll('.show').forEach(s => s.hidden = s.id !== 'show-' + li.dataset.id);
-}
-log.addEventListener('click', ev => { const li = ev.target.closest('li'); if (li) show(li); });
-log.addEventListener('keydown', ev => {
-  const li = ev.target.closest('li');
-  if (li && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); show(li); }
+log.addEventListener('click', ev => {
+  const b = ev.target.closest('button');
+  if (!b) return;
+  log.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  document.querySelectorAll('.show').forEach(s => s.hidden = s.id !== b.getAttribute('aria-controls'));
+  document.getElementById('arhiva').scrollIntoView();   // back to the top of the archive
 });
 </script>

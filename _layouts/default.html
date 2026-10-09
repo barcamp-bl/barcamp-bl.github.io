@@ -12,6 +12,7 @@
 <meta property="og:url" content="{{ site.url }}/">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
@@ -20,19 +21,19 @@
 <body>
 
 <nav><div class="wrap">
-  <!-- GNU screen window list: the "*" follows the active window. On phones: "barcamp lineup program mapa arhiva javi-se" -->
-  <a href="#" class="on"><span class="n">0:</span>barcamp</a>
+  <!-- GNU screen window list: the "*" follows the active window. On phones the "N:" numbers are dropped -->
+  <a href="#" class="on" aria-current="true"><span class="n">0:</span>barcamp</a>
   <a href="#lineup"><span class="n">1:</span>lineup</a>
   <a href="#program"><span class="n">2:</span>program</a>
-  <a href="#lokacija"><span class="n">3:</span><span class="l">lokacija</span><span class="s">mapa</span></a>
-  <a href="#arhiva"><span class="n">4:</span>arhiva</a>
-  <a href="#podrska"><span class="n">5:</span><span class="l">uključi-se</span><span class="s">javi-se</span></a>
-  <span class="clock"><span class="eta-nav">T-??d</span> · 7.11.2026 12:00</span>
+  <a href="#lokacija"><span class="n">3:</span>lokacija</a>
+  <a href="#podrska"><span class="n">4:</span>učestvuj</a>
+  <a href="#arhiva"><span class="n">5:</span>arhiva</a>
+  <span class="clock"><span class="eta-nav">t-??d</span> · 7.11.2026 12:00</span>
 </div></nav>
 
-<div class="wrap">
+<main class="wrap">
 {{ content }}
-</div>
+</main>
 
 <footer><div class="wrap">
   BarCamp BL organizatori · 2015–2026 · <a href="https://github.com/barcamp-bl">github.com/barcamp-bl</a> · exit 0
@@ -44,9 +45,9 @@
   const now = new Date(), start = new Date('{{ site.start }}');
   const days = Math.round((new Date('{{ site.start | slice: 0, 10 }}') -
     Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
-  const word = n => n % 10 === 1 && n % 100 !== 11 ? 'dan' : 'dana';   // 1, 21, 31 dan; 11 dana
-  const [hero, nav] = days > 0 ? [`${days} ${word(days)}`, `T-${days}d`]
-    : days === 0 && now < start ? ['danas!', 'T-0d']
+  // t-Nd: lowercase t for time, like the nav clock
+  const [hero, nav] = days > 0 ? [`t-${days}d`, `t-${days}d`]
+    : days === 0 && now < start ? ['danas!', 't-0d']
     : days === 0 ? ['u toku', 'running']
     : ['završeno, hvala!', 'exit 0'];
   document.querySelectorAll('.eta').forEach(el => el.textContent = hero);
@@ -58,33 +59,40 @@
   const bar = document.querySelector('nav .wrap');
   const tabs = [...bar.querySelectorAll('a')];
   const targets = tabs.map(a => a.hash ? document.querySelector(a.hash) : null);
-  let active = tabs[0], lock = false, timer;
+  let active = tabs[0], tapped = null;
+  const band = new Set();   // sections crossing the top edge of the window
   function select(tab) {
     if (tab === active) return;
-    active.classList.remove('on'); tab.classList.add('on'); active = tab;
+    active.classList.remove('on'); active.removeAttribute('aria-current');
+    tab.classList.add('on'); tab.setAttribute('aria-current', 'true'); active = tab;
     // keep the tab visible when the bar scrolls sideways (narrow screens)
     if (tab.offsetLeft < bar.scrollLeft || tab.offsetLeft + tab.offsetWidth > bar.scrollLeft + bar.clientWidth)
       bar.scrollLeft = tab.offsetLeft - 8;
   }
-  function spy() {
-    if (lock) return unlockWhenIdle(150);
-    const line = bar.offsetHeight + innerHeight * .3;
-    // measure the headings: lokacija is a box inside the program section, its heading is level with program's
-    const tops = targets.map(t => t ? (t.querySelector('h2') || t).getBoundingClientRect().top : -Infinity);
-    let i = 0;
-    // last section whose top passed the line; of two side by side, the first one
-    tops.forEach((top, j) => { if (top <= line && Math.abs(top - tops[i]) >= 2) i = j; });
-    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) i = tabs.length - 1;
-    // program and lokacija sit side by side on wide screens: keep whichever of the two was picked
-    if (tabs.some((t, j) => t === active && Math.abs(tops[j] - tops[i]) < 2)) return;
-    select(tabs[i]);
+  // The active tab is the section at the top edge of the window: exactly where a tap scrolls it to.
+  // Two sections can share that edge (program and lokacija side by side): a tapped one wins, otherwise
+  // the active one stays, otherwise the first. (The last section is at least a screen tall, so every
+  // section can reach the edge.)
+  function pick() {
+    const current = targets[tabs.indexOf(active)];
+    const on = targets.filter(t => band.has(t));
+    const t = band.has(tapped) ? tapped : on.includes(current) ? current : on[0];
+    select(t ? tabs[targets.indexOf(t)] : tabs[0]);
   }
-  // after a click, keep the clicked tab: ignore the smooth scroll it starts, follow the reader again after that
-  function unlockWhenIdle(ms) { clearTimeout(timer); timer = setTimeout(() => { lock = false; }, ms); }
-  tabs.forEach(a => a.addEventListener('click', () => { select(a); lock = true; unlockWhenIdle(200); }));
-  addEventListener('scroll', spy, { passive: true });
-  addEventListener('resize', spy);
-  spy();
+  const edge = new IntersectionObserver(es => {
+    for (const e of es) {
+      if (e.isIntersecting) band.add(e.target);
+      else if (band.delete(e.target) && e.target === tapped) tapped = null;   // it left the band
+    }
+    pick();
+  }, { rootMargin: '-1px 0px -99% 0px' });   // the root shrunk to a thin band at the top of the window
+  targets.forEach(t => t && edge.observe(t));
+  // the section named in the address (a tap, a shared link, Back/Forward) wins ties too;
+  // clicks also count, for re-tapping a tab whose #section is already in the address
+  const fromHash = () => { tapped = location.hash ? document.getElementById(location.hash.slice(1)) : null; pick(); };
+  addEventListener('hashchange', fromHash);
+  fromHash();
+  tabs.forEach((a, i) => a.addEventListener('click', () => { tapped = targets[i]; pick(); }));
 })();
 </script>
 </body>
