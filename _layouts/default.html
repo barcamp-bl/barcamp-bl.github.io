@@ -7,10 +7,16 @@
 <meta name="description" content="{{ site.description }}">
 <meta property="og:title" content="{{ site.title }}">
 <meta property="og:description" content="{{ site.description }}">
-<!-- og: keeps the light teaser; the page itself shows the dark variant -->
-<meta property="og:image" content="{{ site.url }}/images/barcamp-0x07-teaser.png">
+<!-- 1.91:1 card for link previews (heatmap/bel_ascii.py, chalkboard); the page itself shows the portrait teaser -->
+<meta property="og:image" content="{{ site.url }}/images/barcamp-0x07-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BarCamp BL {{ site.edition }}, subota 7.11.2026, Banja Luka">
 <meta property="og:url" content="{{ site.url }}/">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+<link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">

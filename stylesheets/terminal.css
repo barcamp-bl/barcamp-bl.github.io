@@ -110,6 +110,7 @@ h2::before { content: "## "; color: var(--accent); }
 .tc .desc::before { content: "# "; color: var(--dim); }
 .tc .foot { margin-top: auto; display: flex; gap: 4px; flex-wrap: wrap; }
 .tc .ttl a { color: inherit; }
+.tc .ttl .lang { font-size: 12px; font-weight: 400; color: var(--dim); white-space: nowrap; }
 
 .av { flex: none; width: 42px; height: 42px; display: grid; place-items: center; background: #1a1d21;
       border: 1px solid var(--line); color: var(--accent); font-weight: 800; }

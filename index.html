@@ -72,7 +72,8 @@ layout: default
         <div class="who"><div class="av">{{ w[0] | slice: 0 }}{{ w[1] | slice: 0 }}</div>
           <div><div class="nm">{{ t.speakers | join: " & " }}</div>
             {%- if t.link %}<a href="{{ t.link }}" target="_blank" rel="noopener">{{ t.link_label | default: t.link }}</a>{% endif %}</div></div>
-        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}" target="_blank" rel="noopener">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}</div>
+        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}" target="_blank" rel="noopener">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}
+          {%- if t.lang %} <span class="lang">[{{ t.lang }}]</span>{% endif %}</div>
         {%- if t.description %}
         <p class="desc">{{ t.description | escape }}</p>
         {%- endif %}

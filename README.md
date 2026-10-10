@@ -12,7 +12,7 @@ Sajt BarCamp BL-a. GitHub Pages ga gradi Jekyll-om (`github-pages` gem, Jekyll 3
 | `_config.yml` | Izdanje, datum, rok za prijave, kontakt. |
 | `_data/editions.yml` | Prošla izdanja: datum, mjesto, boja. |
 | `_talks/<izdanje>/NN-ime.md` | Jedno predavanje po fajlu; `NN` je redoslijed na stranici. |
-| `images/` | Teaser: svijetli za og:, tamni za stranicu. |
+| `images/` | Tamni teaser na stranici; `barcamp-0x07-og.png` je slika za link preview (og:). |
 
 ## Novo predavanje
 
