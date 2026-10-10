@@ -131,18 +131,14 @@ layout: default
 
 <section id="arhiva">
   <h2><b>git log</b> --editions <span class="dim">(klikni na commit)</span></h2>
-  <div class="arch">
-    <ul class="log" id="log">
+  <!-- one <details> per edition; the shared name makes it an accordion (opening one closes the others) -->
+  <div class="log">
 {%- for e in site.data.editions %}
-      <li style="--c:{{ e.fg | default: e.color }}"><button type="button" aria-controls="show-{{ e.id }}" aria-pressed="{{ forloop.first }}">
-        <span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
-        <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</button></li>
-{%- endfor %}
-    </ul>
-    <div>
-{%- for e in site.data.editions %}
-      {%- assign ts = site.talks | where: "edition", e.id | sort: "path" %}
-      <div class="show" id="show-{{ e.id }}"{% unless forloop.first %} hidden{% endunless %}>
+    {%- assign ts = site.talks | where: "edition", e.id | sort: "path" %}
+    <details name="arhiva" style="--c:{{ e.fg | default: e.color }}"{% if forloop.first %} open{% endif %}>
+      <summary><span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
+        <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</summary>
+      <div class="show">
         <div class="cmd">$ git show {{ e.id }} <span style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
         <ol>
         {%- for t in ts %}
@@ -169,8 +165,8 @@ layout: default
         <div class="dim"># slike. nekad</div>
         {%- endif %}
       </div>
+    </details>
 {%- endfor %}
-    </div>
   </div>
 </section>
 
@@ -202,15 +198,11 @@ L.marker([LAT + 3500 / 111320, LON], { icon: L.divIcon({ className: 'ring-tag', 
   iconSize: [0, 0] }), interactive: false }).addTo(map);
 </script>
 <script>
-// archive: every edition's talk list is in the page, the log just switches which one is shown
-const log = document.getElementById('log');
-log.addEventListener('click', ev => {
-  const b = ev.target.closest('button');
-  if (!b) return;
-  log.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
-  document.querySelectorAll('.show').forEach(s => s.hidden = s.id !== b.getAttribute('aria-controls'));
-  document.getElementById('arhiva').scrollIntoView();   // back to the top of the archive
-});
+// archive accordion: when an edition opens and the one closing above it pulls the page up,
+// bring the opened commit back into view
+document.querySelectorAll('#arhiva details').forEach(d => d.addEventListener('toggle', () => {
+  if (d.open && d.getBoundingClientRect().top < 0) d.scrollIntoView();
+}));
 
 // lightbox: a click on a .zoom link shows its image in the dialog (Esc, the button or any click closes it);
 // clicks with a modifier key keep their usual new-tab/window behaviour

@@ -37,7 +37,7 @@ nav .clock { margin-left: auto; padding: 8px 12px; color: var(--dim); font-size:
 .hero .eta { white-space: nowrap; }
 /* a phrase that moves to the next line as a whole, and only wraps inside if it can't fit on a line alone */
 .hero .nw { display: inline-block; text-indent: 0; }
-.hero > *, .info > *, .arch > * { min-width: 0; }
+.hero > *, .info > * { min-width: 0; }
 .hero figure { margin: 0; position: relative; height: 100%; aspect-ratio: 1080 / 1350; }
 .hero figure > a { display: block; height: 100%; }   /* the link covers the image (it opens the lightbox) */
 .hero img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 6px;
@@ -115,22 +115,19 @@ h2::before { content: "## "; color: var(--accent); }
       border: 1px solid var(--line); color: var(--accent); font-weight: 800; }
 .chip { font-size: 10px; padding: 0 5px; border: 1px solid; border-radius: 3px; }
 
-/* archive = git log on the left, git show on the right */
-/* the last section is at least a screen tall, so it can scroll up to the nav like every other one
-   (only matters on wide screens; on phones the archive is longer than that anyway) */
-#arhiva { min-height: 100vh; }
-.arch { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
-.log { margin: 0; padding: 0; list-style: none; font-size: 14px; }
-.log li { border-left: 2px solid var(--line); padding: 0 0 16px 20px; position: relative; }
-.log button { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit;
-              text-align: left; cursor: pointer; }
-.log button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
-.log li::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px;
-                  border-radius: 50%; background: var(--c); }
-.log [aria-pressed="true"] .hash { text-decoration: underline; }
-.log [aria-pressed="true"]::after { content: "◀ HEAD"; position: absolute; right: 0; top: 0; color: var(--ok); font-size: 12px; }
+/* archive = git log as an accordion: each commit opens its talk list and photos */
+.log { font-size: 14px; }
+.log details { border-left: 2px solid var(--line); padding: 0 0 16px 20px; position: relative; scroll-margin-top: 48px; }
+.log details::before { content: ""; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px;
+                       border-radius: 50%; background: var(--c); }
+.log summary { list-style: none; cursor: pointer; position: relative; padding-right: 72px; }
+.log summary::-webkit-details-marker { display: none; }
+.log summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+.log details[open] .hash { text-decoration: underline; }
+.log details[open] > summary::after { content: "◀ HEAD"; position: absolute; right: 0; top: 0; color: var(--ok); font-size: 12px; }
 .log .hash { color: var(--wt); }
 .log .tag { color: var(--c); border: 1px solid var(--c); padding: 0 6px; border-radius: 3px; font-size: 12px; }
+.log .show { margin-top: 12px; font-size: 15px; }
 .show { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 18px 22px; }
 .show .cmd { color: var(--dim); margin-bottom: 10px; }
 .show ol { margin: 0; padding-left: 26px; columns: 2; column-gap: 36px; }
@@ -138,7 +135,7 @@ h2::before { content: "## "; color: var(--accent); }
 .show li.x { color: var(--dim); text-decoration: line-through; }
 /* photos per edition (images/foto/<edition>/), empty frames until they're in */
 .show .pics-cmd { margin: 22px 0 10px; }
-.pics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+.pics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 10px; }
 .pics > * { aspect-ratio: 4 / 3; border: 1px dashed var(--line); border-radius: 4px; overflow: hidden; }
 .pics img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -165,7 +162,7 @@ footer { margin-top: 72px; border-top: 1px solid var(--line); padding: 24px 0 40
   nav a:not(.on):hover { color: var(--fg); background: var(--line); }
   .btn:hover { filter: brightness(1.2); }
   .tc:hover { border-color: var(--accent); }
-  .log button:hover .hash { text-decoration: underline; }
+  .log summary:hover .hash { text-decoration: underline; }
   .hero .mark.shaded { cursor: crosshair; }
 }
 
@@ -173,14 +170,13 @@ footer { margin-top: 72px; border-top: 1px solid var(--line); padding: 24px 0 40
   .hero { grid-template-columns: 1fr; }
   .hero figure { height: auto; aspect-ratio: auto; max-width: 560px; width: 100%; justify-self: center; }
   .hero img { position: static; height: auto; }
-  .info, .arch, .about { grid-template-columns: 1fr; }
+  .info, .about { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
   .hero, .two { grid-template-columns: 1fr; }
   .hero { gap: 28px; padding-top: 40px; }
   .stats { grid-template-columns: 1fr 1fr; }
   .show ol { columns: 1; }
-  .pics { grid-template-columns: 1fr 1fr; }
   pre.term { font-size: 11.5px; }
   /* phone hero: one left rail (the gutter) for every block, one inner rail 16px in for the text of the
      buttons and the log; date + time on one line, place + countdown on the next */

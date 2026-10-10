@@ -59,8 +59,9 @@
   const bar = document.querySelector('nav .wrap');
   const tabs = [...bar.querySelectorAll('a')];
   const targets = tabs.map(a => a.hash ? document.querySelector(a.hash) : null);
-  let active = tabs[0], tapped = null;
+  let active = tabs[0], tapped = null, end = false;
   const band = new Set();   // sections crossing the top edge of the window
+  const seen = new Set();   // sections anywhere in the window
   function select(tab) {
     if (tab === active) return;
     active.classList.remove('on'); active.removeAttribute('aria-current');
@@ -71,12 +72,14 @@
   }
   // The active tab is the section at the top edge of the window: exactly where a tap scrolls it to.
   // Two sections can share that edge (program and lokacija side by side): a tapped one wins, otherwise
-  // the active one stays, otherwise the first. (The last section is at least a screen tall, so every
-  // section can reach the edge.)
+  // the active one stays, otherwise the first. The last sections may be too short to reach the edge, so at
+  // the end of the page (footer in view) the last tab is active, or a tapped section that is in view.
   function pick() {
     const current = targets[tabs.indexOf(active)];
     const on = targets.filter(t => band.has(t));
-    const t = band.has(tapped) ? tapped : on.includes(current) ? current : on[0];
+    const t = band.has(tapped) ? tapped
+      : end ? (seen.has(tapped) ? tapped : targets.at(-1))
+      : on.includes(current) ? current : on[0];
     select(t ? tabs[targets.indexOf(t)] : tabs[0]);
   }
   const edge = new IntersectionObserver(es => {
@@ -87,6 +90,15 @@
     pick();
   }, { rootMargin: '-1px 0px -99% 0px' });   // the root shrunk to a thin band at the top of the window
   targets.forEach(t => t && edge.observe(t));
+  const view = new IntersectionObserver(es => {
+    for (const e of es) {
+      if (e.isIntersecting) seen.add(e.target);
+      else if (seen.delete(e.target) && e.target === tapped) tapped = null;   // it left the window
+    }
+    pick();
+  });
+  targets.forEach(t => t && view.observe(t));
+  new IntersectionObserver(([e]) => { end = e.isIntersecting; pick(); }).observe(document.querySelector('footer'));
   // the section named in the address (a tap, a shared link, Back/Forward) wins ties too;
   // clicks also count, for re-tapping a tab whose #section is already in the address
   const fromHash = () => { tapped = location.hash ? document.getElementById(location.hash.slice(1)) : null; pick(); };

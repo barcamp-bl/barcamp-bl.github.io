@@ -146,12 +146,13 @@ void main(){
   // glitch rows get a cold/hot split
   if (gRow) o.rgb *= mix(vec3(.82, 1.0, 1.18), vec3(1.18, .95, .85), step(.5, hash(vec2(cell.y, frame))));
 
-  gl_FragColor = o;
+  // premultiplied output, the browser default: composites the same everywhere (WebKit ignores straight alpha)
+  gl_FragColor = vec4(o.rgb * o.a, o.a);
 }`;
 
   let gl, U = {}, texSrc;
   function initGL() {
-    gl = glc.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+    gl = glc.getContext('webgl', { antialias: false });
     if (!gl) return false;
     const sh = (type, code) => {
       const s = gl.createShader(type); gl.shaderSource(s, code); gl.compileShader(s);
