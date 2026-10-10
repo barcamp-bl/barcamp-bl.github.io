@@ -9,7 +9,7 @@ lang: sr-Latn
 edition: "0x07"
 start: "2026-11-07T12:00:00+01:00"   # countdown target
 cfp_until: "16.10.2026"
-email: barcamp@lol123.lol
+email: ping@barcampbl.com
 
 # One file per talk: _talks/<edition>/NN-speaker.md (NN = order on the page).
 # Unannounced talks are named *.draft.md and kept out of git via .git/info/exclude,

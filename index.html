@@ -119,7 +119,7 @@ layout: default
       <p>Imaš temu? Hardver, softver, security, retro, nešto što si napravio pa se pokvarilo.
         Prijave do {{ site.cfp_until }}.</p>
       <p>Hoćeš da pomogneš? Hrana i piće, majice, afterparty ili troškovi organizacije. Dogovorićemo se.</p>
-      <a class="btn primary" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a class="btn primary" href="mailto:{{ site.email }}">{{ site.email | replace: "@", " [at] " | replace: ".", " [dot] " }}</a>
     </div>
     <div class="box">
       <h3>Samo dođi</h3>
