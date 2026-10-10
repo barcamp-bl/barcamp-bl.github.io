@@ -10,27 +10,31 @@ layout: default
 {%- assign meka = held | where_exp: "t", "t.speakers contains 'Goran Mekić'" -%}
 <header class="hero">
   <div>
-    <div class="dim">~/banja-luka $ ./barcamp --edition</div>
+    <div class="dim">~/banja-luka $ <span class="nw">./barcamp --edition</span></div>
     <div class="mark">
       <h1>BarCamp<br>BL {{ site.edition }}</h1>
       <canvas aria-hidden="true"></canvas>
     </div>
-    <p class="sub">subota <b>7.11.2026</b> · od 12:00 · Banja Luka · <span class="eta" style="white-space:nowrap">t-??d</span></p>
+    <!-- two phrases that never split; on phones each gets its own line and the middle "·" is dropped -->
+    <p class="sub"><span class="g">subota <b>7.11.2026</b> · od&nbsp;12:00</span><span class="sep"> · </span><span
+       class="g">Banja&nbsp;Luka · <span class="eta">t-??d</span></span></p>
     <div class="btns">
       <a class="btn primary" href="#podrska">./prijavi-predavanje</a>
       <a class="btn" href="#lokacija">traceroute lokacija</a>
     </div>
-<pre class="term"><span class="dim"># neki skupljaju markice. Meka skuplja BarCampove.</span>
-<span class="p">$</span> make barcamp-0x07
-<span class="ok">[ OK ]</span> datum ............. 7.11.2026
-<span class="ok">[ OK ]</span> ulaz .............. besplatan
-<span class="wt">[ .. ]</span> lokacija .......... resolvuje se, javljamo uskoro
-<span class="wt">[ .. ]</span> predavači ......... {% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? (prijave do 16.10.)
-<span class="wt">[ .. ]</span> boja .............. Miloš još bira
-<span class="p">$</span> <span class="cursor"></span></pre>
+<!-- each log line is a span ending in its own newline: verbatim on wide screens, a status|key|value grid
+     when the box is narrower than the longest line (see .hero .term in terminal.css) -->
+<pre class="term"><span class="c dim"># neki skupljaju markice. <span class="nw">Meka skuplja BarCampove.</span>
+</span><span class="p">$</span> make barcamp-0x07
+<span class="ln"><span class="ok">[ OK ]</span> <span class="k">datum .............</span> <span class="v">7.11.2026</span>
+</span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">ulaz ..............</span> <span class="v">besplatan</span>
+</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">lokacija ..........</span> <span class="v">resolvuje se, <span class="nw">javljamo uskoro</span></span>
+</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? <span class="nw">(prijave do 16.10.)</span></span>
+</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">boja ..............</span> <span class="v">Miloš još bira</span>
+</span><span class="p">$</span> <span class="cursor"></span></pre>
   </div>
   <figure>
-    <a href="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}">
+    <a class="zoom" href="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}">
       <img src="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}" width="1080" height="1350"
            alt="Grafik: predavači na BarCamp BL 0x01 do 0x06. Goran Mekić ima 6 predavanja, kolona 0x07 je puna upitnika.">
     </a>
@@ -53,9 +57,10 @@ layout: default
 </section>
 
 <section id="lineup">
-  <h2><b>ls</b> {{ site.edition }}/predavanja/ <span class="dim">// redoslijed uskoro</span></h2>
+  {%- comment %} -draft goes together with "redoslijed uskoro": drop both when the order is final {% endcomment %}
+  <h2><b>ls</b> {{ site.edition }}/predavanja-draft/ <span class="dim">// redoslijed uskoro</span></h2>
   {%- if lineup.size == 0 %}
-  <pre class="term"><span class="p">$</span> ls {{ site.edition }}/predavanja/
+  <pre class="term"><span class="p">$</span> ls {{ site.edition }}/predavanja-draft/
 <span class="dim">ls: lista se objavljuje uskoro (prijave do {{ site.cfp_until }})</span></pre>
   {%- else %}
   <div class="lineup">
@@ -66,8 +71,8 @@ layout: default
       <div class="body">
         <div class="who"><div class="av">{{ w[0] | slice: 0 }}{{ w[1] | slice: 0 }}</div>
           <div><div class="nm">{{ t.speakers | join: " & " }}</div>
-            {%- if t.link %}<a href="{{ t.link }}">{{ t.link_label | default: t.link }}</a>{% endif %}</div></div>
-        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}</div>
+            {%- if t.link %}<a href="{{ t.link }}" target="_blank" rel="noopener">{{ t.link_label | default: t.link }}</a>{% endif %}</div></div>
+        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}" target="_blank" rel="noopener">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}</div>
         {%- if t.description %}
         <p class="desc">{{ t.description | escape }}</p>
         {%- endif %}
@@ -100,7 +105,7 @@ layout: default
 <pre><span class="dim">$</span> host barcamp-0x07
 <span class="dim">;; connection timed out; no servers could be reached</span>
 <span class="wt">lokacija: uskoro</span> (negdje u Banjoj Luci)
-<span class="dim">geo</span> 44.7723 N, 17.1917 E ± par km   <a href="https://www.openstreetmap.org/way/1287023880#map=14/44.7722669/17.1917339">osm</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=44.7722669,17.1917339">google maps</a></pre>
+<span class="dim">geo</span> 44.7723 N, 17.1917 E ± par km   <a href="https://www.openstreetmap.org/way/1287023880#map=14/44.7722669/17.1917339" target="_blank" rel="noopener">osm</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=44.7722669,17.1917339" target="_blank" rel="noopener">google maps</a></pre>
       </div>
   </section>
 </div>
@@ -155,7 +160,7 @@ layout: default
         <div class="cmd pics-cmd">$ ls {{ e.id }}/slike/</div>
         <div class="pics">
         {%- for f in foto %}
-          <a href="{{ f | relative_url }}"><img src="{{ f | relative_url }}" loading="lazy" alt="BarCamp BL {{ e.id }}"></a>
+          <a class="zoom" href="{{ f | relative_url }}"><img src="{{ f | relative_url }}" loading="lazy" alt="BarCamp BL {{ e.id }}"></a>
         {%- else %}
           {%- for i in (1..6) %}<span></span>{% endfor %}
         {%- endfor %}
@@ -169,6 +174,12 @@ layout: default
   </div>
 </section>
 
+<!-- lightbox for links with class="zoom" (heatmap, archive photos); without JS those links just open the image -->
+<dialog class="lightbox" id="lightbox" aria-label="Slika">
+  <form method="dialog"><button aria-label="Zatvori">[ esc ]</button></form>
+  <img alt="">
+</dialog>
+
 <script src="{{ '/javascripts/logo.js' | relative_url }}" defer></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -179,8 +190,10 @@ layout: default
 const LAT = 44.7722669, LON = 17.1917339;
 // no dragging on touch screens, so a thumb on the map scrolls the page (pinch-zoom still works)
 const map = L.map('map', { scrollWheelZoom: false, dragging: !L.Browser.mobile });
+// credit links open in a new tab, like every external link on the page
+map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(map);
 L.circle([LAT, LON], { radius: 3500, color: '#f5c400', weight: 2, dashArray: '6 6',
   fillColor: '#f5c400', fillOpacity: .08 }).addTo(map);
 map.fitBounds(L.latLng(LAT, LON).toBounds(7000), { padding: [16, 16] });
@@ -198,4 +211,17 @@ log.addEventListener('click', ev => {
   document.querySelectorAll('.show').forEach(s => s.hidden = s.id !== b.getAttribute('aria-controls'));
   document.getElementById('arhiva').scrollIntoView();   // back to the top of the archive
 });
+
+// lightbox: a click on a .zoom link shows its image in the dialog (Esc, the button or any click closes it);
+// clicks with a modifier key keep their usual new-tab/window behaviour
+const box = document.getElementById('lightbox'), boxImg = box.querySelector('img');
+document.addEventListener('click', ev => {
+  const a = ev.target.closest('a.zoom');
+  if (!a || ev.button || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
+  ev.preventDefault();
+  boxImg.src = a.href;
+  boxImg.alt = a.querySelector('img')?.alt || '';
+  box.showModal();
+});
+box.addEventListener('click', () => box.close());
 </script>
