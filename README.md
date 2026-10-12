@@ -8,7 +8,7 @@ Sajt BarCamp BL-a. GitHub Pages ga gradi Jekyll-om (`github-pages` gem, Jekyll 3
 | --- | --- |
 | `index.html` | Cijela stranica (Liquid). |
 | `_layouts/default.html` | `<head>`, navigacija, footer. |
-| `stylesheets/terminal.css` | Terminal tema. Akcenat je privremeni "chrome" dok 0x07 ne dobije boju. |
+| `stylesheets/terminal.css` | Terminal tema. Akcenat (`--accent`) je boja izdanja: 0x07 je cyan. Naslov ostaje "chrome". |
 | `_config.yml` | Izdanje, datum, rok za prijave, kontakt. |
 | `_data/editions.yml` | Prošla izdanja: datum, mjesto, boja. |
 | `_talks/<izdanje>/NN-ime.md` | Jedno predavanje po fajlu; `NN` je redoslijed na stranici. |

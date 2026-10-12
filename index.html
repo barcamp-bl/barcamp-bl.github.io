@@ -4,10 +4,12 @@ layout: default
 {%- assign lineup = site.talks | where: "edition", site.edition | sort: "path" -%}
 {%- assign past = site.talks | where_exp: "t", "t.edition != site.edition" -%}
 {%- assign held = past | where_exp: "t", "t.note != 'otkazano'" -%}
+{%- comment %} speakers who presented together count once, like their shared row in the teaser {% endcomment -%}
 {%- assign names = "" -%}
-{%- for t in held -%}{%- for s in t.speakers -%}{%- assign names = names | append: s | append: "|" -%}{%- endfor -%}{%- endfor -%}
+{%- for t in held -%}{%- assign who = t.speakers | join: " & " -%}{%- assign names = names | append: who | append: "|" -%}{%- endfor -%}
 {%- assign speakers = names | split: "|" | uniq -%}
-{%- assign meka = held | where_exp: "t", "t.speakers contains 'Goran Mekić'" -%}
+{%- assign first_year = site.data.editions.last.date | split: "." | last -%}
+{%- assign years = site.start | slice: 0, 4 | minus: first_year -%}
 <header class="hero">
   <div>
     <div class="dim">~/banja-luka $ <span class="nw">./barcamp --edition</span></div>
@@ -28,9 +30,9 @@ layout: default
 </span><span class="p">$</span> make barcamp-0x07
 <span class="ln"><span class="ok">[ OK ]</span> <span class="k">datum .............</span> <span class="v">7.11.2026</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">ulaz ..............</span> <span class="v">besplatan</span>
-</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">lokacija ..........</span> <span class="v">resolvuje se, <span class="nw">javljamo uskoro</span></span>
+</span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">lokacija ..........</span> <span class="v">Lanaco <span class="nw">tehnološki centar</span></span>
 </span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? <span class="nw">(prijave do 16.10.)</span></span>
-</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">boja ..............</span> <span class="v">Miloš još bira</span>
+</span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">boja ..............</span> <span class="v p">cyan</span>
 </span><span class="p">$</span> <span class="cursor"></span></pre>
   </div>
   <figure>
@@ -51,7 +53,7 @@ layout: default
       <div><b>{{ site.data.editions.size }}</b><span>izdanja</span></div>
       <div><b>{{ held.size }}+</b><span>predavanja</span></div>
       <div><b>{{ speakers.size }}+</b><span>predavača</span></div>
-      <div><b>{{ meka.size }}</b><span>predavanja: samo Meka</span></div>
+      <div><b>{{ years }}</b><span>i kusur godina</span></div>
     </div>
   </div>
 </section>
@@ -101,12 +103,12 @@ layout: default
   <section id="lokacija">
       <h2><b>traceroute</b> barcamp-0x07</h2>
       <div class="loc">
-        <div class="bar">lokacija — osm</div>
-        <div id="map"></div>
+        <div class="bar">~/{{ site.edition }}/lokacija</div>
+        <div id="map" role="region" aria-label="Mapa: Lanaco tehnološki centar, Banja Luka"></div>
 <pre><span class="dim">$</span> host barcamp-0x07
-<span class="dim">;; connection timed out; no servers could be reached</span>
-<span class="wt">lokacija: uskoro</span> (negdje u Banjoj Luci)
-<span class="dim">geo</span> 44.7723 N, 17.1917 E ± par km   <a href="https://www.openstreetmap.org/way/1287023880#map=14/44.7722669/17.1917339" target="_blank" rel="noopener">osm</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=44.7722669,17.1917339" target="_blank" rel="noopener">google maps</a></pre>
+<span class="ok">Lanaco tehnološki centar</span>
+Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
+<span class="dim">geo</span> 44.7724 N, 17.2239 E   <a href="https://www.openstreetmap.org/node/6418229186#map=17/44.772398/17.2239007" target="_blank" rel="noopener">osm</a> · <a href="https://www.google.com/maps?cid=3352657905929286256" target="_blank" rel="noopener">google maps</a></pre>
       </div>
   </section>
 </div>
@@ -182,21 +184,17 @@ layout: default
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script type="module">
 // Runs after the deferred Leaflet (modules wait for deferred scripts); if Leaflet doesn't load,
-// only the map is missing. Venue not confirmed yet: placeholder point is the city centre
-// (Hram Hrista Spasitelja, OSM way 1287023880) with a dashed "?" area around it, no address.
-const LAT = 44.7722669, LON = 17.1917339;
+// only the map is missing. Venue: Lanaco tehnološki centar (OSM node 6418229186).
+const LAT = 44.772398, LON = 17.2239007;
 // no dragging on touch screens, so a thumb on the map scrolls the page (pinch-zoom still works)
 const map = L.map('map', { scrollWheelZoom: false, dragging: !L.Browser.mobile });
 // credit links open in a new tab, like every external link on the page
 map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(map);
-L.circle([LAT, LON], { radius: 3500, color: '#f5c400', weight: 2, dashArray: '6 6',
-  fillColor: '#f5c400', fillOpacity: .08 }).addTo(map);
-map.fitBounds(L.latLng(LAT, LON).toBounds(7000), { padding: [16, 16] });
-// tag sits on the circle's top edge, so the map's own "Banja Luka" label stays readable
-L.marker([LAT + 3500 / 111320, LON], { icon: L.divIcon({ className: 'ring-tag', html: '<span>barcamp-0x07: ???</span>',
-  iconSize: [0, 0] }), interactive: false }).addTo(map);
+map.setView([LAT, LON], 15);
+L.marker([LAT, LON], { icon: L.divIcon({ className: 'pin', html: '<b></b><span>barcamp-0x07</span>',
+  iconSize: [24, 24], iconAnchor: [12, 12] }), interactive: false }).addTo(map);
 </script>
 <script>
 // archive accordion: when an edition opens and the one closing above it pulls the page up,

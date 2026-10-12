@@ -1,7 +1,7 @@
-/* BarCamp BL 0x07: terminal theme. Accent is a temporary chrome until the 0x07 color is picked. */
+/* BarCamp BL 0x07: terminal theme. Accent is the 0x07 color (cyan); the heading keeps its chrome. */
 :root {
   --bg: #1c2024; --panel: #252a30; --line: #363d45; --fg: #dde2e6; --dim: #8d98a1;
-  --accent: #c9d0d6; --ok: #3fdc6e; --wt: #f5c400; --no: #ff4d4d; --gut: clamp(16px, 3vw, 40px);
+  --accent: #00ffff; --ok: #3fdc6e; --wt: #f5c400; --no: #ff4d4d; --gut: clamp(16px, 3vw, 40px);
   --chrome: linear-gradient(180deg, #fff 0%, #e6eaee 38%, #7d8791 52%, #b9c1c8 62%, #f4f6f8 100%);
 }
 * { box-sizing: border-box; }
@@ -90,9 +90,13 @@ h2::before { content: "## "; color: var(--accent); }
 .leaflet-container { font: 12px "JetBrains Mono", monospace; }
 .leaflet-control-attribution { background: rgba(28, 32, 36, .85) !important; color: var(--dim); }
 .leaflet-bar a { background: var(--panel); color: var(--fg); border-color: var(--line); }
-.ring-tag span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-weight: 700;
-                 color: var(--wt); background: #1c2024; border: 1px solid var(--wt); padding: 1px 6px; }
+.pin { color: var(--ok); white-space: nowrap; font-weight: 700; }
+.pin b { display: block; width: 24px; height: 24px; border: 2px solid var(--ok); border-radius: 50%;
+         box-shadow: 0 0 0 6px rgba(63, 220, 110, .2); background: rgba(63, 220, 110, .35); }
+.pin span { position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%);
+            background: #1c2024; border: 1px solid var(--ok); padding: 0 6px; font-size: 12px; }
 .loc pre { margin: 0; padding: 14px 16px; font: inherit; font-size: 13px; white-space: pre-wrap; }
+.loc pre a { white-space: nowrap; }
 
 /* 0x07 lineup: one terminal window per talk */
 .lineup { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
