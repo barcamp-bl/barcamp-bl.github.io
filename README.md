@@ -11,6 +11,7 @@ Sajt BarCamp BL-a. GitHub Pages ga gradi Jekyll-om (`github-pages` gem, Jekyll 3
 | `stylesheets/terminal.css` | Terminal tema. Akcenat (`--accent`) je boja izdanja: 0x07 je cyan. Naslov ostaje "chrome". |
 | `_config.yml` | Izdanje, datum, rok za prijave, kontakt. |
 | `_data/editions.yml` | Prošla izdanja: datum, mjesto, boja. |
+| `_data/thanks.yml` | Lista `THANKS.md` na stranici: ime i link, jedan unos po redu. |
 | `_talks/<izdanje>/NN-ime.md` | Jedno predavanje po fajlu; `NN` je redoslijed na stranici. |
 | `images/` | Tamni teaser na stranici; `barcamp-0x07-og.png` je slika za link preview (og:). |
 
@@ -20,7 +21,7 @@ Sajt BarCamp BL-a. GitHub Pages ga gradi Jekyll-om (`github-pages` gem, Jekyll 3
 ---
 edition: "0x07"
 speakers: ["Ime Prezime"]
-home: nadimak                  # ~/0x07/<home> na kartici
+home: nadimak                  # ~/0x07/predavanja/<home> na kartici
 link: https://example.com      # opciono
 link_label: example.com        # opciono
 title: "Naslov, tačno kako ga je predavač poslao"

@@ -235,6 +235,7 @@ void main(){
     start = performance.now(); nextGlitch = start + 3200;
     rebuild();
     mark.classList.add('shaded');
+    fonts.then(rebuild);                      // a font that arrives after the 2.5 s redraws the logo
     let lastW = mark.clientWidth;
     new ResizeObserver(() => { if (Math.abs(mark.clientWidth - lastW) > 2) { lastW = mark.clientWidth; rebuild(); } }).observe(mark);
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; run(); }).observe(glc);

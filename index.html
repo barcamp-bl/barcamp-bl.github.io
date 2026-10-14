@@ -3,13 +3,13 @@ layout: default
 ---
 {%- assign lineup = site.talks | where: "edition", site.edition | sort: "path" -%}
 {%- assign past = site.talks | where_exp: "t", "t.edition != site.edition" -%}
-{%- assign held = past | where_exp: "t", "t.note != 'otkazano'" -%}
 {%- comment %} speakers who presented together count once, like their shared row in the teaser {% endcomment -%}
 {%- assign names = "" -%}
-{%- for t in held -%}{%- assign who = t.speakers | join: " & " -%}{%- assign names = names | append: who | append: "|" -%}{%- endfor -%}
+{%- for t in past -%}{%- assign who = t.speakers | join: " & " -%}{%- assign names = names | append: who | append: "|" -%}{%- endfor -%}
 {%- assign speakers = names | split: "|" | uniq -%}
 {%- assign first_year = site.data.editions.last.date | split: "." | last -%}
 {%- assign years = site.start | slice: 0, 4 | minus: first_year -%}
+{%- assign cfp = site.cfp_until | split: "." -%}
 <header class="hero">
   <div>
     <div class="dim">~/banja-luka $ <span class="nw">./barcamp --edition</span></div>
@@ -31,7 +31,7 @@ layout: default
 <span class="ln"><span class="ok">[ OK ]</span> <span class="k">datum .............</span> <span class="v">7.11.2026</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">ulaz ..............</span> <span class="v">besplatan</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">lokacija ..........</span> <span class="v">Lanaco <span class="nw">tehnološki centar</span></span>
-</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? <span class="nw">(prijave do 16.10.)</span></span>
+</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? <span class="nw">(prijave do {{ cfp[0] }}.{{ cfp[1] }}.)</span></span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">boja ..............</span> <span class="v p">cyan</span>
 </span><span class="p">$</span> <span class="cursor"></span></pre>
   </div>
@@ -51,7 +51,7 @@ layout: default
       bude vrijeme za pauzu. Od 2015. godine, u Banjoj Luci.</p>
     <div class="stats">
       <div><b>{{ site.data.editions.size }}</b><span>izdanja</span></div>
-      <div><b>{{ held.size }}+</b><span>predavanja</span></div>
+      <div><b>{{ past.size }}+</b><span>predavanja</span></div>
       <div><b>{{ speakers.size }}+</b><span>predavača</span></div>
       <div><b>{{ years }}</b><span>i kusur godina</span></div>
     </div>
@@ -59,29 +59,27 @@ layout: default
 </section>
 
 <section id="lineup">
-  {%- comment %} -draft goes together with "redoslijed uskoro": drop both when the order is final {% endcomment %}
-  <h2><b>ls</b> {{ site.edition }}/predavanja-draft/ <span class="dim">// redoslijed uskoro</span></h2>
+  <h2><b>ls</b> -d ~/{{ site.edition }}/predavanja/*</h2>
   {%- if lineup.size == 0 %}
-  <pre class="term"><span class="p">$</span> ls {{ site.edition }}/predavanja-draft/
-<span class="dim">ls: lista se objavljuje uskoro (prijave do {{ site.cfp_until }})</span></pre>
+  <pre class="term"><span class="dim">ls: lista se objavljuje uskoro (prijave do {{ site.cfp_until }})</span></pre>
   {%- else %}
   <div class="lineup">
 {%- for t in lineup %}
     {%- assign name = t.speakers | first %}
     {%- assign w = name | split: " " %}
-    <article class="tc"><div class="bar">~/{{ site.edition }}/{{ t.home }}</div>
+    <article class="tc"><div class="bar">~/{{ site.edition }}/predavanja/{{ t.home }}</div>
       <div class="body">
         <div class="who"><div class="av">{{ w[0] | slice: 0 }}{{ w[1] | slice: 0 }}</div>
           <div><div class="nm">{{ t.speakers | join: " & " }}</div>
             {%- if t.link %}<a href="{{ t.link }}" target="_blank" rel="noopener">{{ t.link_label | default: t.link }}</a>{% endif %}</div></div>
-        <div class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}" target="_blank" rel="noopener">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}
-          {%- if t.lang %} <span class="lang">[{{ t.lang }}]</span>{% endif %}</div>
+        <h3 class="ttl">{% if t.title_link %}<a href="{{ t.title_link }}" target="_blank" rel="noopener">{{ t.title | escape }}</a>{% else %}{{ t.title | escape }}{% endif %}
+          {%- if t.lang %} <span class="lang">[{{ t.lang }}]</span>{% endif %}</h3>
         {%- if t.description %}
         <p class="desc">{{ t.description | escape }}</p>
         {%- endif %}
         <div class="foot">
           {%- for e in site.data.editions reversed %}
-            {%- assign hit = held | where: "edition", e.id | where_exp: "x", "x.speakers contains name" %}
+            {%- assign hit = past | where: "edition", e.id | where_exp: "x", "x.speakers contains name" %}
             {%- if hit.size > 0 %}<span class="chip" style="color:{{ e.fg | default: e.color }}">{{ e.id }}</span>{% endif %}
           {%- endfor %}
           <span class="chip" style="color:var(--accent)">{{ site.edition }}</span></div>
@@ -93,12 +91,11 @@ layout: default
 
 <div class="info">
   <section id="program">
-      <h2><b>program</b> {{ site.edition }}</h2>
-<pre class="term"><span class="p">$</span> crontab -l
-<span class="dim">#m  h  dom mon dow</span>
-<span class="wt">0   12 7   11  *</span>    otvaranje, kafa, nervoza
+      <h2><b>crontab</b> -l -u barcamp-{{ site.edition }}</h2>
+<pre class="term"><span class="dim">#m h  dom mon dow</span>
+<span class="wt">0  12 7   11  *</span>  otvaranje, kafa, nervoza
 <span class="dim"># ostatak satnice stiže
-# kad se zatvore prijave ({{ site.cfp_until | slice: 0, 6 }})</span></pre>
+# kad se zatvore prijave ({{ cfp[0] }}.{{ cfp[1] }}.)</span></pre>
   </section>
   <section id="lokacija">
       <h2><b>traceroute</b> barcamp-0x07</h2>
@@ -108,14 +105,14 @@ layout: default
 <pre><span class="dim">$</span> host barcamp-0x07
 <span class="ok">Lanaco tehnološki centar</span>
 Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
-<span class="dim">geo</span> 44.7724 N, 17.2239 E   <a href="https://www.openstreetmap.org/node/6418229186#map=17/44.772398/17.2239007" target="_blank" rel="noopener">osm</a> · <a href="https://www.google.com/maps?cid=3352657905929286256" target="_blank" rel="noopener">google maps</a></pre>
+<span class="dim">geo</span> 44.7724 N, 17.2239 E   <span class="nw"><a href="https://www.openstreetmap.org/node/6418229186#map=17/44.772398/17.2239007" target="_blank" rel="noopener">osm</a> · <a href="https://www.google.com/maps?cid=3352657905929286256" target="_blank" rel="noopener">google maps</a></span></pre>
       </div>
   </section>
 </div>
 
 
 <section id="podrska">
-  <h2><b>contributing.md</b></h2>
+  <h2 class="md"><b>CONTRIBUTING.md</b></h2>
   <div class="two">
     <div class="box">
       <h3>Održi predavanje ili podrži BarCamp</h3>
@@ -130,10 +127,18 @@ Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
       <a class="btn" href="#lokacija">gdje je to?</a>
     </div>
   </div>
+  <!-- a markdown list still being written: one line per entry in _data/thanks.yml, the last bullet is the cursor -->
+  <h2 class="md"><b>THANKS.md</b></h2>
+  <ul class="thanks">
+{%- for t in site.data.thanks %}
+    <li>{% if t.url %}<a href="{{ t.url }}" target="_blank" rel="noopener">{{ t.name }}</a>{% else %}{{ t.name }}{% endif %}</li>
+{%- endfor %}
+    <li aria-hidden="true"><span class="cursor"></span></li>
+  </ul>
 </section>
 
 <section id="arhiva">
-  <h2><b>git log</b> --editions <span class="dim">(klikni na commit)</span></h2>
+  <h2><b>git log</b> --editions <span class="dim nw">(klikni na commit)</span></h2>
   <!-- one <details> per edition; the shared name makes it an accordion (opening one closes the others) -->
   <div class="log">
 {%- for e in site.data.editions %}
@@ -142,11 +147,11 @@ Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
       <summary><span class="hash">commit {{ e.id }}</span> <span class="tag">{{ e.color_name }}</span><br>
         <span class="dim">Date:</span> {{ e.date }} &nbsp; <span class="dim">@</span> {{ e.short }}</summary>
       <div class="show">
-        <div class="cmd">$ git show {{ e.id }} <span style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
+        <div class="cmd">$ git show {{ e.id }} <span class="nw" style="color:{{ e.fg | default: e.color }}">// {{ e.date }} · {{ e.venue }}</span></div>
         <ol>
         {%- for t in ts %}
-          <li{% if t.note == "otkazano" %} class="x"{% endif %}>{{ t.title | escape }} <span class="dim">— {{ t.speakers | join: " & " }}
-            {%- if t.note and t.note != "otkazano" %} ({{ t.note }}){% endif %}</span></li>
+          <li>{{ t.title | escape }} <span class="dim nw">— {{ t.speakers | join: " & " }}
+            {%- if t.note %} ({{ t.note }}){% endif %}</span></li>
         {%- endfor %}
         </ol>
         {%- capture dir %}images/foto/{{ e.id }}/{% endcapture %}
@@ -156,8 +161,8 @@ Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
           {%- if f.path contains dir %}{% case ext %}{% when ".jpg", ".jpeg", ".png", ".webp" %}{% assign foto = foto | push: f.path %}{% endcase %}{% endif %}
         {%- endfor %}
         {%- assign foto = foto | sort %}
-        <div class="cmd pics-cmd">$ ls {{ e.id }}/slike/</div>
-        <div class="pics">
+        <div class="cmd pics-cmd">$ ls ~/{{ e.id }}/slike/</div>
+        <div class="pics{% if foto.size == 0 %} empty{% endif %}">
         {%- for f in foto %}
           <a class="zoom" href="{{ f | relative_url }}"><img src="{{ f | relative_url }}" loading="lazy" alt="BarCamp BL {{ e.id }}"></a>
         {%- else %}
@@ -194,14 +199,14 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(map);
 map.setView([LAT, LON], 15);
 L.marker([LAT, LON], { icon: L.divIcon({ className: 'pin', html: '<b></b><span>barcamp-0x07</span>',
-  iconSize: [24, 24], iconAnchor: [12, 12] }), interactive: false }).addTo(map);
+  iconSize: [24, 24], iconAnchor: [12, 12] }), interactive: false, keyboard: false }).addTo(map);
 </script>
 <script>
-// archive accordion: when an edition opens and the one closing above it pulls the page up,
-// bring the opened commit back into view
-document.querySelectorAll('#arhiva details').forEach(d => d.addEventListener('toggle', () => {
-  if (d.open && d.getBoundingClientRect().top < 0) d.scrollIntoView();
-}));
+// archive accordion: an opened edition snaps to just under the nav, so the visitor sees that something
+// happened and its talks and photos are in view. On the click, one frame later (when the edition is open),
+// and not on "toggle": that event also fires for the edition that is open when the page loads
+document.querySelectorAll('#arhiva summary').forEach(s => s.addEventListener('click', () =>
+  requestAnimationFrame(() => { if (s.parentElement.open) s.parentElement.scrollIntoView(); })));
 
 // lightbox: a click on a .zoom link shows its image in the dialog (Esc, the button or any click closes it);
 // clicks with a modifier key keep their usual new-tab/window behaviour
