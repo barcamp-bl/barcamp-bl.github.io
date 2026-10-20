@@ -9,7 +9,6 @@ layout: default
 {%- assign speakers = names | split: "|" | uniq -%}
 {%- assign first_year = site.data.editions.last.date | split: "." | last -%}
 {%- assign years = site.start | slice: 0, 4 | minus: first_year -%}
-{%- assign cfp = site.cfp_until | split: "." -%}
 <header class="hero">
   <div>
     <div class="dim">~/banja-luka $ <span class="nw">./barcamp --edition</span></div>
@@ -21,7 +20,7 @@ layout: default
     <p class="sub"><span class="g">subota <b>7.11.2026</b> · od&nbsp;12:00</span><span class="sep"> · </span><span
        class="g">Banja&nbsp;Luka · <span class="eta">t-??d</span></span></p>
     <div class="btns">
-      <a class="btn primary" href="#podrska">./prijavi-predavanje</a>
+      <a class="btn primary" href="#lineup">ls predavanja</a>
       <a class="btn" href="#lokacija">traceroute lokacija</a>
     </div>
 <!-- each log line is a span ending in its own newline: verbatim on wide screens, a status|key|value grid
@@ -31,14 +30,14 @@ layout: default
 <span class="ln"><span class="ok">[ OK ]</span> <span class="k">datum .............</span> <span class="v">7.11.2026</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">ulaz ..............</span> <span class="v">besplatan</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">lokacija ..........</span> <span class="v">Lanaco <span class="nw">tehnološki centar</span></span>
-</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }} + {% endif %}??? <span class="nw">(prijave do {{ cfp[0] }}.{{ cfp[1] }}.)</span></span>
+</span><span class="ln"><span class="wt">[ .. ]</span> <span class="k">predavači .........</span> <span class="v">{% if lineup.size > 0 %}{{ lineup.size }}+{% else %}???{% endif %}</span>
 </span><span class="ln"><span class="ok">[ OK ]</span> <span class="k">boja ..............</span> <span class="v p">cyan</span>
 </span><span class="p">$</span> <span class="cursor"></span></pre>
   </div>
   <figure>
     <a class="zoom" href="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}">
       <img src="{{ '/images/barcamp-0x07-teaser-dark.png' | relative_url }}" width="1080" height="1350"
-           alt="Grafik: predavači na BarCamp BL 0x01 do 0x06. Goran Mekić ima 6 predavanja, kolona 0x07 je puna upitnika.">
+           alt="Grafik: predavači na BarCamp BL 0x01 do 0x07. Goran Mekić ima 7 predavanja; na 0x07 se vraćaju i Robert Simmons i Stefan Matić.">
     </a>
   </figure>
 </header>
@@ -95,7 +94,7 @@ layout: default
 <pre class="term"><span class="dim">#m h  dom mon dow</span>
 <span class="wt">0  12 7   11  *</span>  otvaranje, kafa, nervoza
 <span class="dim"># ostatak satnice stiže
-# kad se zatvore prijave ({{ cfp[0] }}.{{ cfp[1] }}.)</span></pre>
+# najkasnije 25.10.</span></pre>
   </section>
   <section id="lokacija">
       <h2><b>traceroute</b> barcamp-0x07</h2>
@@ -115,9 +114,8 @@ Veljka Mlađenovića bb, Poslovna zona Incel, Banja Luka
   <h2 class="md"><b>CONTRIBUTING.md</b></h2>
   <div class="two">
     <div class="box">
-      <h3>Održi predavanje ili podrži BarCamp</h3>
-      <p>Imaš temu? Hardver, softver, security, retro, nešto što si napravio pa se pokvarilo.
-        Prijave do {{ site.cfp_until }}.</p>
+      <h3>Podrži BarCamp</h3>
+      <p>Prijave za predavanja su zatvorene.</p>
       <p>Hoćeš da pomogneš? Hrana i piće, majice, afterparty ili troškovi organizacije. Dogovorićemo se.</p>
       <a class="btn primary" href="mailto:{{ site.email }}">{{ site.email | replace: "@", " [at] " | replace: ".", " [dot] " }}</a>
     </div>
