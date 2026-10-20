@@ -221,3 +221,40 @@ document.addEventListener('click', ev => {
 });
 box.addEventListener('click', () => box.close());
 </script>
+
+<!-- the event for search engines (schema.org Event); speakers come from the lineup cards -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {{ site.title | jsonify }},
+  "description": "U subotu 7.11. Banja Luka dobija sedmo izdanje BarCampa: dan tehničkih predavanja, od 12:00 do 20:00 u Lanaco tehnološkom centru.",
+  "startDate": "2026-11-07T12:00:00+01:00",
+  "endDate": "2026-11-07T20:00:00+01:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "isAccessibleForFree": true,
+  "inLanguage": "sr",
+  "url": "{{ site.url }}/",
+  "image": ["{{ site.url }}/images/barcamp-0x07-og.png"],
+  "location": {
+    "@type": "Place",
+    "name": "Lanaco tehnološki centar",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Veljka Mlađenovića bb, Poslovna zona Incel",
+      "addressLocality": "Banja Luka",
+      "addressCountry": "BA"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 44.772398, "longitude": 17.2239007 }
+  },
+  "organizer": { "@type": "Organization", "name": "BarCamp BL", "url": "{{ site.url }}/" },
+  "performer": [
+{%- assign sep = "" -%}
+{%- for t in lineup -%}{%- for s in t.speakers %}{{ sep }}
+    { "@type": "Person", "name": {{ s | jsonify }} }
+{%- assign sep = "," -%}
+{%- endfor -%}{%- endfor %}
+  ]
+}
+</script>
