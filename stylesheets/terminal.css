@@ -70,6 +70,9 @@ pre.term { background: var(--panel); border: 1px solid var(--line); border-radiu
   .ln .v { white-space: pre-wrap; }
   .c { display: block; white-space: pre-wrap; padding-left: 2ch; text-indent: -2ch; }
 }
+/* the schedule: time | speaker, with the talk title under the name; a long title wraps in its own column */
+.prog .rs { display: grid; grid-template-columns: 5ch minmax(0, 1fr); column-gap: 2ch; }
+.prog .t { white-space: pre-wrap; }
 .ln .k { color: var(--dim); }   /* labels and dot leaders step back, the values carry the line */
 .p { color: var(--accent); } .ok { color: var(--ok); } .wt { color: var(--wt); } .no { color: var(--no); }
 .dim { color: var(--dim); }
@@ -117,7 +120,8 @@ h2.md::before { content: "## "; }
 .loc pre a { white-space: nowrap; }
 
 /* 0x07 lineup: one terminal window per talk */
-.lineup { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 16px; }
+/* at most 3 columns: a column is never narrower than a third of the row */
+.lineup { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(min(320px, 100%), (100% - 32px) / 3), 1fr)); gap: 16px; }
 .tc { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
       display: flex; flex-direction: column; }
 .tc .bar { padding: 7px 12px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 12px;

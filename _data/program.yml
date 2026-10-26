@@ -1,0 +1,13 @@
+# The schedule ("program") on the page, in order. A talk is named by its card's `home`; the speaker and
+# title come from the card. Anything else (opening, lunch) is plain text.
+- { at: "11:00", text: "otvaranje, kafa, nervoza" }
+- { at: "12:00", talk: stefan.matic }
+- { at: "12:30", talk: lebo }
+- { at: "13:15", talk: hyperglitch }
+- { at: "14:15", talk: meka }
+- { at: "15:15", talk: nikolajanjic }
+- { at: "15:45", text: "ručak" }
+- { at: "16:30", talk: utkonos }
+- { at: "17:30", talk: wesinator }
+- { at: "18:15", talk: dsimic }
+- { at: "19:15", talk: beric89 }
